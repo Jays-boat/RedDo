@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.MainActivity">
+
+    <ImageView
+        android:id="@+id/arrows_left"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_arrows_left"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_month_year"
+        app:layout_constraintEnd_toStartOf="@+id/tv_month_year"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_month_year" />
+
+    <TextView
+        android:id="@+id/tv_month_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:textSize="20sp"
+        android:background="@drawable/bg_calendar_tv_month_year"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="八月 2018" />
+
+    <ImageView
+        android:id="@+id/arrows_right"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_arrows_right"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_month_year"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toEndOf="@+id/tv_month_year"
+        app:layout_constraintTop_toTopOf="@+id/tv_month_year" />
+
+    <com.haibin.calendarview.CalendarView
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f9f9f9"
+        app:current_month_text_color="#333333"
+        app:current_month_lunar_text_color="#CFCFCF"
+        app:other_month_text_color="#888888"
+        app:week_text_color="#111"
+        app:year_view_day_text_color="#333333"
+        app:year_view_scheme_color="#f17706"
+        app:year_view_month_text_color="#ff0000"
+        app:calendar_height="35dp"
+        app:day_text_size="16sp"
+        app:lunar_text_size="8sp"
+        app:year_view_day_text_size="9sp"
+        app:min_year="2004"
+        app:year_view_month_text_size="20sp"
+        app:week_start_with="mon"
+        app:month_view_show_mode="mode_fix"
+        app:month_view="@string/month_view_path"
+        app:week_bar_view="@string/week_bar_view_path"
+        app:layout_constraintTop_toBottomOf="@+id/tv_month_year"/>
+
+</android.support.constraint.ConstraintLayout>

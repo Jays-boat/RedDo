@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">RedDo</string>
+
+    <string name="month_view_path">com.jayboat.reddo.ui.view.calendar.HMonthView</string>
+    <string name="week_bar_view_path">com.jayboat.reddo.ui.view.calendar.HWeekBarView</string>
+
+    <string-array name="week_bar_array">
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+        <item>周日</item>
+    </string-array>
 </resources>
