@@ -13,4 +13,10 @@
         <item>周六</item>
         <item>周日</item>
     </string-array>
+    <string name="type_name_essay">随笔</string>
+    <string name="type_name_todo">待办</string>
+    <string name="type_name_schedule">日程</string>
+    <string name="type_name_daily">日常</string>
+
+    <string name="default_hint">还没这个类型的笔记 - 新写一个或再点一下高亮类型的类型按钮来回到综合时间轴:)</string>
 </resources>

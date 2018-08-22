@@ -14,6 +14,9 @@ class CalendarActivity : AppCompatActivity() {
         setContentView(R.layout.activity_calendar)
 
         tv_month_year.paint.isFakeBoldText = true
+        tv_month_year.setOnClickListener {
+            calendar_view.showYearSelectLayout(calendar_view.curYear)
+        }
 
         val c = Calendar().apply {
             year = calendar_view.curYear
