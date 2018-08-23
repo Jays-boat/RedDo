@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bfc820ddbfb3c20bb82bf1441132adca",
+    "identityHash": "3b4ff7b22de8a2722884975a479a1f21",
     "entities": [
       {
         "tableName": "entry",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`type` INTEGER NOT NULL, `title` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `year` INTEGER NOT NULL, `month` INTEGER NOT NULL, `day` INTEGER NOT NULL, `hour` INTEGER NOT NULL, `minute` INTEGER NOT NULL, `second` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`type` INTEGER NOT NULL, `title` TEXT NOT NULL, `detail` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `year` INTEGER NOT NULL, `month` INTEGER NOT NULL, `day` INTEGER NOT NULL, `hour` INTEGER NOT NULL, `minute` INTEGER NOT NULL, `second` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "type",
@@ -19,6 +19,12 @@
             "columnName": "title",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "detail",
+            "columnName": "detail",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "id",
@@ -82,24 +88,18 @@
         "foreignKeys": []
       },
       {
-        "tableName": "essays_text",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`entry_id` INTEGER NOT NULL, `detail` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`entry_id`) REFERENCES `entry`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "tableName": "text_info",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entry_id` INTEGER NOT NULL, FOREIGN KEY(`entry_id`) REFERENCES `entry`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "entryId",
-            "columnName": "entry_id",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "detail",
-            "columnName": "detail",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "entryId",
+            "columnName": "entry_id",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -112,12 +112,12 @@
         },
         "indices": [
           {
-            "name": "index_essays_text_entry_id",
+            "name": "index_text_info_entry_id",
             "unique": false,
             "columnNames": [
               "entry_id"
             ],
-            "createSql": "CREATE  INDEX `index_essays_text_entry_id` ON `${TABLE_NAME}` (`entry_id`)"
+            "createSql": "CREATE  INDEX `index_text_info_entry_id` ON `${TABLE_NAME}` (`entry_id`)"
           }
         ],
         "foreignKeys": [
@@ -135,18 +135,18 @@
         ]
       },
       {
-        "tableName": "Image",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`entry_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`entry_id`) REFERENCES `entry`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "tableName": "image",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entry_id` INTEGER NOT NULL, FOREIGN KEY(`entry_id`) REFERENCES `entry`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "entryId",
-            "columnName": "entry_id",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "entryId",
+            "columnName": "entry_id",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -159,12 +159,77 @@
         },
         "indices": [
           {
-            "name": "index_Image_entry_id",
+            "name": "index_image_entry_id",
             "unique": false,
             "columnNames": [
               "entry_id"
             ],
-            "createSql": "CREATE  INDEX `index_Image_entry_id` ON `${TABLE_NAME}` (`entry_id`)"
+            "createSql": "CREATE  INDEX `index_image_entry_id` ON `${TABLE_NAME}` (`entry_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "entry",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "entry_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "todo",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entry_id` INTEGER NOT NULL, `describe` TEXT NOT NULL, `isActivate` INTEGER NOT NULL, `isDone` INTEGER NOT NULL, FOREIGN KEY(`entry_id`) REFERENCES `entry`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entryId",
+            "columnName": "entry_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "describe",
+            "columnName": "describe",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isActivate",
+            "columnName": "isActivate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isDone",
+            "columnName": "isDone",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_todo_entry_id",
+            "unique": false,
+            "columnNames": [
+              "entry_id"
+            ],
+            "createSql": "CREATE  INDEX `index_todo_entry_id` ON `${TABLE_NAME}` (`entry_id`)"
           }
         ],
         "foreignKeys": [
@@ -184,7 +249,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"bfc820ddbfb3c20bb82bf1441132adca\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3b4ff7b22de8a2722884975a479a1f21\")"
     ]
   }
 }

@@ -7,6 +7,7 @@ import com.jayboat.reddo.room.RedDataBase
 
 lateinit var appContext: Context
 lateinit var redDataBase: RedDataBase
+
 class App : Application() {
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)

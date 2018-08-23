@@ -1,37 +1,18 @@
 package com.jayboat.reddo.room.bean
 
-import android.arch.persistence.room.*
-import android.graphics.Color
-import com.jayboat.reddo.room.TypeConverterHelper
+import android.arch.persistence.room.Embedded
+import android.arch.persistence.room.Relation
 
-@Entity(tableName = "entry",indices = [Index("type")])
-@TypeConverters(TypeConverterHelper::class)
 data class Entry(
-        @PrimaryKey(autoGenerate = true)
-        var id: Int = 0,
-        var type: EntryType = EntryType.TODO,
-        var title: String = "",
         @Embedded
-        var time: RedDate = RedDate()
+        var simpleEntry: SimpleEntry = SimpleEntry(),
+        @Relation(parentColumn = "id", entityColumn = "entry_id", entity = TextInfo::class)
+        var textInfoList: List<TextInfo> = listOf(),
+        @Relation(parentColumn = "id", entityColumn = "entry_id", entity = Image::class)
+        var imgList: List<Image> = listOf(),
+        @Relation(parentColumn = "id", entityColumn = "entry_id", entity = Todo::class)
+        var todoList: List<Todo> = listOf()
 ) {
-
-    enum class EntryType(val color: Int){
-        ESSAY(Color.parseColor("#7FB2ED")),
-        TODO(Color.parseColor("#9AD25E")),
-        AGENDA(Color.parseColor("#E07A75")),
-        DAILY(Color.parseColor("#FAC538"));
-    }
-
-    data class RedDate(
-        var year: Int,
-        var month: Int,
-        var day: Int,
-        var hour: Int,
-        var minute: Int,
-        var second: Int
-    ){ @Ignore constructor() : this(-1, -1, -1, -1, -1, -1) }
-
-    fun resetId() {
-        id = 0
-    }
+    val isFinished
+        get() = simpleEntry.type == SimpleEntry.EntryType.TODO && todoList.all { it.isDone || !it.isActivate }
 }

@@ -3,7 +3,7 @@ package com.jayboat.reddo.room.bean
 import android.arch.persistence.room.*
 
 @Entity(
-        tableName = "image",
+        tableName = "text_info",
         indices = [Index("entry_id")],
         foreignKeys = [
             ForeignKey(entity = SimpleEntry::class,
@@ -14,7 +14,7 @@ import android.arch.persistence.room.*
             )
         ]
 )
-data class Image(
+data class TextInfo(
         @PrimaryKey(autoGenerate = true)
         var id: Int = 0,
         @ColumnInfo(name = "entry_id")

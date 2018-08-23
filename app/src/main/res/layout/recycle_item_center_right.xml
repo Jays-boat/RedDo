@@ -59,7 +59,6 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="5dp"
-        android:src="@drawable/temp"
         tools:ignore="ContentDescription" />
 
 </RelativeLayout>

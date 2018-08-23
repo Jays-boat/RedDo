@@ -59,7 +59,7 @@
         app:week_text_color="#111"
         app:year_view_day_text_color="#333333"
         app:year_view_scheme_color="#f17706"
-        app:year_view_month_text_color="#ff0000"
+        app:year_view_month_text_color="#d8d8d8"
         app:calendar_height="35dp"
         app:day_text_size="16sp"
         app:lunar_text_size="8sp"

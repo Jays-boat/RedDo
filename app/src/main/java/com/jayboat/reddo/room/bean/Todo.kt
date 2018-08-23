@@ -3,7 +3,7 @@ package com.jayboat.reddo.room.bean
 import android.arch.persistence.room.*
 
 @Entity(
-        tableName = "image",
+        tableName = "todo",
         indices = [Index("entry_id")],
         foreignKeys = [
             ForeignKey(entity = SimpleEntry::class,
@@ -14,10 +14,12 @@ import android.arch.persistence.room.*
             )
         ]
 )
-data class Image(
+data class Todo(
         @PrimaryKey(autoGenerate = true)
         var id: Int = 0,
         @ColumnInfo(name = "entry_id")
-        var entryId: Int = -1
-        //todo 更多数据
+        var entryId: Int = -1,
+        var describe: String = "",
+        var isActivate: Boolean = true,
+        var isDone: Boolean = false
 )
