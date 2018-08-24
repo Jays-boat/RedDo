@@ -45,8 +45,8 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        var mWidth = MeasureSpec.getSize(widthMeasureSpec)
-        var mHeight = MeasureSpec.getSize(heightMeasureSpec)
+        val mWidth :Int
+        val mHeight :Int
         val widthMeasure: Int
         val heightMeasure: Int
         if (cWidth == 0 || cHeight == 0 || scalePro == 0f) {
@@ -71,12 +71,9 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
             MotionEvent.ACTION_DOWN -> {
                 dx = event.x
                 dy = event.y
-                if (event.pointerCount >= 2){
-                    originDistance = distance(event)
-                    Log.i("two","point down $originDistance")
-                }
             }
             MotionEvent.ACTION_MOVE -> {
+                Log.i("event", "move ${event.pointerCount}")
                 if (event.pointerCount < 2) {
                     currentMode = moveMode
                     var offsetX = event.x - dx
@@ -95,17 +92,20 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
                     requestLayout()
                 } else {
                     currentMode = scaleMode
-                    if(!isScale){
-                        isScale = true
-                        originDistance = distance(event)
-                    } else {
-                        val currentDistance = distance(event)
+                    val currentDistance = distance(event)
+                    if (originDistance == 0f){
+                        originDistance = currentDistance
+                    } else{
                         if (currentDistance > 10f) {
                             scalePro = currentDistance / originDistance
                             Log.i("scale", "$scalePro")
+                            xLocation = x
+                            yLocation = y
+                            originDistance = 0f
                             requestLayout()
                         }
                     }
+
                 }
             }
             MotionEvent.ACTION_UP -> {
@@ -129,6 +129,9 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
                     else -> {
                     }
                 }
+            }
+            MotionEvent.ACTION_POINTER_DOWN -> {
+                Log.i("event", "pointerDown ${event.pointerCount}")
             }
         }
         return true

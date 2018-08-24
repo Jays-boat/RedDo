@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.jayboat.reddo.ui.widget.EditLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.EditActivity">
 
-    <android.support.constraint.ConstraintLayout
+    <com.jayboat.reddo.ui.widget.EditLayout
+        android:id="@+id/el_edit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FAFAFA"
-        android:layout_alignParentBottom="true">
+        android:layout_height="match_parent"
+        >
 
 
         <ImageView
@@ -20,11 +20,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:cursorVisible="true"
             android:src="@drawable/icon_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignParentBottom="true"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -34,8 +33,8 @@
             android:layout_marginStart="8dp"
             android:cursorVisible="true"
             android:src="@drawable/icon_down"
-            app:layout_constraintStart_toEndOf="@+id/iv_edit_back"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/iv_edit_back"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -43,11 +42,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:cursorVisible="true"
             android:src="@drawable/icon_tag2"
-            app:layout_constraintEnd_toStartOf="@+id/iv_edit_camera"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@id/iv_edit_camera"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -55,11 +54,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:cursorVisible="true"
             android:src="@drawable/icon_camera"
-            app:layout_constraintEnd_toStartOf="@+id/iv_edit_album"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@id/iv_edit_album"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -67,11 +66,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:cursorVisible="true"
             android:src="@drawable/icon_album"
-            app:layout_constraintEnd_toStartOf="@+id/iv_edit_more"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@id/iv_edit_more"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -79,12 +78,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:cursorVisible="true"
             android:src="@drawable/icon_more"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             tools:ignore="ContentDescription" />
-    </android.support.constraint.ConstraintLayout>
 
-</com.jayboat.reddo.ui.widget.EditLayout>
+    </com.jayboat.reddo.ui.widget.EditLayout>
+
+</ScrollView>
+
+

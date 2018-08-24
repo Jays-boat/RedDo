@@ -82,11 +82,9 @@ class MainActivity : BaseActivity() {
                         mAdapter.changeType(type)
                     }
                     view.et_search.addTextChangedListener(object : TextWatcher {
-                        override fun afterTextChanged(s: Editable?) {
-                        }
+                        override fun afterTextChanged(s: Editable?) = Unit
 
-                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                        }
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
                         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                             // todo 监听关键字进行显示
