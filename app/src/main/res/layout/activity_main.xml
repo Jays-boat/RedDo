@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/cl_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.jayboat.reddo.widget.DottedLineView
+    <com.jayboat.reddo.ui.widget.DottedLineView
         android:id="@+id/dlv_line"
         android:layout_width="1dp"
         android:layout_height="match_parent"
@@ -24,63 +26,9 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <ImageView
-        android:id="@+id/iv_main_search"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/shape_circle"
-        android:padding="6dp"
-        android:src="@drawable/icon_search"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/iv_main_calendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:padding="8dp"
-        android:src="@drawable/icon_calendar"
-        app:layout_constraintEnd_toStartOf="@+id/iv_main_tag"
-        app:layout_constraintStart_toEndOf="@+id/tv_main_date"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/tv_main_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/shape_round_rectangle"
-        android:gravity="center"
-        android:paddingBottom="4dp"
-        android:paddingEnd="8dp"
-        android:paddingStart="8dp"
-        android:paddingTop="4dp"
-        android:textColor="#fff"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="08/21周二 13:20" />
-
-    <ImageView
-        android:id="@+id/iv_main_tag"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/shape_circle"
-        android:padding="6dp"
-        android:src="@drawable/icon_tag"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+    <include
+        android:id="@+id/top"
+        layout="@layout/include_top"/>
 
     <ImageView
         android:id="@+id/iv_main_setting"
@@ -111,9 +59,24 @@
     <RadioGroup
         android:id="@+id/gp_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
         app:layout_constraintBottom_toBottomOf="parent">
+
+        <RadioButton
+            android:id="@+id/rb_all"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:text="@string/type_name_all"
+            android:textColor="#fff"
+            android:gravity="center"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/shape_bottom_rectangle"/>
 
         <RadioButton
             android:id="@+id/rb_essay"
@@ -124,10 +87,10 @@
             android:text="@string/type_name_essay"
             android:textColor="#fff"
             android:gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="4dp"
-            android:background="@drawable/shape_bottom_rectangle"/>
+            android:layout_gravity="bottom"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/selector_bottom_essay"/>
 
         <RadioButton
             android:id="@+id/rb_todo"
@@ -138,10 +101,10 @@
             android:text="@string/type_name_todo"
             android:textColor="#fff"
             android:gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="4dp"
-            android:background="@drawable/shape_bottom_rectangle"/>
+            android:layout_gravity="bottom"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/selector_bottom_todo"/>
 
         <RadioButton
             android:id="@+id/rb_schedule"
@@ -152,10 +115,10 @@
             android:text="@string/type_name_schedule"
             android:textColor="#fff"
             android:gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="4dp"
-            android:background="@drawable/shape_bottom_rectangle"/>
+            android:layout_gravity="bottom"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/selector_bottom_schedule"/>
 
         <RadioButton
             android:id="@+id/rb_daily"
@@ -166,10 +129,10 @@
             android:text="@string/type_name_daily"
             android:textColor="#fff"
             android:gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:padding="4dp"
-            android:background="@drawable/shape_bottom_rectangle"/>
+            android:layout_gravity="bottom"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/selector_bottom_daily"/>
 
     </RadioGroup>
 
@@ -178,6 +141,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.93" />
+        app:layout_constraintGuide_percent="0.94" />
 
 </android.support.constraint.ConstraintLayout>

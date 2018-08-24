@@ -7,11 +7,11 @@
         android:topLeftRadius="10dp"
         android:topRightRadius="10dp"/>
     <solid
-        android:color="#CCCCCC"/>
+        android:color="@color/type_daily_bottom_yellow"/>
     <padding
-        android:top="2dp"
-        android:right="2dp"
-        android:left="2dp"
-        android:bottom="2dp"/>
+        android:bottom="3dp"
+        android:left="3dp"
+        android:right="3dp"
+        android:top="3dp"/>
 
 </shape>

@@ -1,4 +1,4 @@
-package com.jayboat.reddo.widget
+package com.jayboat.reddo.ui.widget
 
 import android.content.Context
 import android.graphics.*

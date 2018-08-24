@@ -1,4 +1,4 @@
-package com.jayboat.reddo.viewholder
+package com.jayboat.reddo.ui.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

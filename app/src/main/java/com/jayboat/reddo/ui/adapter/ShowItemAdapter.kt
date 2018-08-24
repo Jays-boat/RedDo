@@ -1,12 +1,11 @@
-package com.jayboat.reddo.adapter
+package com.jayboat.reddo.ui.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.jayboat.reddo.App
 import com.jayboat.reddo.R
 import com.jayboat.reddo.appContext
-import com.jayboat.reddo.viewholder.*
+import com.jayboat.reddo.ui.viewholder.*
 
 /*
  by Cynthia at 2018/8/21
@@ -45,11 +44,18 @@ import com.jayboat.reddo.viewholder.*
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (position % 2 == 0){
-//            TODO("绑定右边的数据")
+        if (holder is NoneItemViewHolder){
+            holder.refreshData(type)
+        } else if (holder is LeftItemViewHolder){
+
         } else {
-            //TODO("绑定左边的数据")
+
         }
+    }
+
+    fun changeType(type: String){
+        this.type = type
+        notifyDataSetChanged()
     }
 }
 

@@ -18,6 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.CalendarActivity" />
+        <activity android:name=".ui.activity.EditActivity"
+            android:windowSoftInputMode="adjustPan|stateVisible"/>
     </application>
 
 </manifest>
