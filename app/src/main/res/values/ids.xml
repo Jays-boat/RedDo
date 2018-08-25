@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tv_item_todo_title" type="id"/>
+    <item name="tv_item_todo_time" type="id"/>
+    <item name="ll_item_todo" type="id"/>
+</resources>

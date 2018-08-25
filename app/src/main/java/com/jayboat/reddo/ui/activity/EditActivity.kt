@@ -11,7 +11,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.jayboat.reddo.R
 import com.jayboat.reddo.base.BaseActivity
-import com.jayboat.reddo.ui.widget.OnPictureListener
 import com.jayboat.reddo.utils.ImageEngine
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zhihu.matisse.Matisse

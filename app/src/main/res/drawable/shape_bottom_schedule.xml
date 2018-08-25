@@ -7,7 +7,7 @@
         android:topLeftRadius="10dp"
         android:topRightRadius="10dp"/>
     <solid
-        android:color="@color/type_schedule_bottom_red"/>
+        android:color="@color/type_agenda_bottom_red"/>
     <padding
         android:bottom="3dp"
         android:left="3dp"

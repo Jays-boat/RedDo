@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/checkbox_todo"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="4dp"
+        tools:background="@drawable/ic_checkbox_normal"/>
+
+    <TextView
+        android:id="@+id/tv_todo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/checkbox_todo"
+        android:layout_marginStart="15dp"
+        android:textSize="14sp"
+        tools:text="通过考核"/>
+
+</RelativeLayout>

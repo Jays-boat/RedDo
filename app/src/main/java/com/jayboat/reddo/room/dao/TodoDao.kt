@@ -10,7 +10,7 @@ import com.jayboat.reddo.room.bean.Todo
 interface TodoDao {
 
     @Insert(onConflict = REPLACE)
-    fun insertTodoList(imgs: List<Todo>)
+    fun insertTodoList(todoList: List<Todo>)
 
     @Query("DELETE FROM todo WHERE entry_id = :entryId")
     fun delTodoList(entryId: Int)

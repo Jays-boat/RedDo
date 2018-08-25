@@ -2,6 +2,7 @@
     <string name="app_name">RedDo</string>
 
     <string name="month_view_path">com.jayboat.reddo.ui.view.calendar.HMonthView</string>
+    <string name="week_view_path">com.jayboat.reddo.ui.view.calendar.HWeekView</string>
     <string name="week_bar_view_path">com.jayboat.reddo.ui.view.calendar.HWeekBarView</string>
 
     <string-array name="week_bar_array">

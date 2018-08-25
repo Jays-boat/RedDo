@@ -4,7 +4,7 @@ import android.arch.persistence.room.*
 
 @Entity(
         tableName = "text_info",
-        indices = [Index("entry_id")],
+        indices = [Index("entry_id",unique = false)],
         foreignKeys = [
             ForeignKey(entity = SimpleEntry::class,
                     parentColumns = ["id"],

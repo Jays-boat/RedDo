@@ -1,6 +1,7 @@
 package com.jayboat.reddo.ui.view.calendar
 
 import android.content.Context
+import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.widget.TextView
@@ -12,6 +13,7 @@ class HWeekBarView(context: Context) : WeekBar(context) {
 
     init {
         LayoutInflater.from(context).inflate(com.haibin.calendarview.R.layout.cv_week_bar, this, true).apply {
+            setBackgroundColor(Color.WHITE)
             val textColor = ContextCompat.getColor(context, R.color.week_bar_text_color)
             for (i in 0 until childCount) {
                 (getChildAt(i) as TextView).apply {

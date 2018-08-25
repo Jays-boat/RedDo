@@ -13,7 +13,13 @@
 
     <color name="type_essay_bottom_blue">#8CBAF0</color>
     <color name="type_todo_bottom_green">#AED47A</color>
-    <color name="type_schedule_bottom_red">#D68B85</color>
+    <color name="type_agenda_bottom_red">#D68B85</color>
     <color name="type_daily_bottom_yellow">#F2CC63</color>
     <color name="type_all_bottom_gray">#CCCCCC</color>
+    <color name="calendar_workday">#333333</color>
+    <color name="calendar_weekend">#888888</color>
+
+    <color name="calendar_rv_text">#333333</color>
+    <color name="calendar_rv_text_light" >#B6B5B5</color>
+
 </resources>

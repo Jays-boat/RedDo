@@ -5,10 +5,10 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.support.v4.content.ContextCompat
 import com.haibin.calendarview.Calendar
-import com.haibin.calendarview.MonthView
+import com.haibin.calendarview.WeekView
 import com.jayboat.reddo.R
 
-class HMonthView(context: Context) : MonthView(context) {
+class HWeekView(context: Context) : WeekView(context) {
 
     private var mSelectRadius = 0f
     private var mTextWidth = 0f
@@ -27,29 +27,25 @@ class HMonthView(context: Context) : MonthView(context) {
         strokeWidth = 5f
     }
 
-    override fun onDrawText(canvas: Canvas, calendar: Calendar, x: Int, y: Int, hasScheme: Boolean, isSelected: Boolean) {
-        val cx = x + mItemWidth / 2f
-        val top = mTextBaseLine + y
-
-        if (calendar.isCurrentMonth) {
-            canvas.drawText(calendar.day.toString(), cx, top,
-                    mOtherMonthTextPaint.takeIf { calendar.isWeekend } ?: mCurMonthTextPaint)
-        }
-
-    }
-
     override fun onPreviewHook() {
         super.onPreviewHook()
         mSelectRadius = mCurMonthTextPaint.textSize / 4f * 3
         mTextWidth = mCurMonthLunarTextPaint.measureText("0") * 2f
     }
 
-    override fun onDrawSelected(canvas: Canvas, calendar: Calendar?, x: Int, y: Int, hasScheme: Boolean): Boolean {
-        canvas.drawCircle(x + mItemWidth / 2f, y + mItemHeight / 2f, mSelectRadius, mSelectStrokePaint)
+    override fun onDrawText(canvas: Canvas, calendar: Calendar, x: Int, hasScheme: Boolean, isSelected: Boolean) {
+        if (calendar.isCurrentMonth) {
+            canvas.drawText(calendar.day.toString(), x + mItemWidth / 2f, (mSelectRadius + mItemHeight) / 2f,
+                    mOtherMonthTextPaint.takeIf { calendar.isWeekend } ?: mCurMonthTextPaint)
+        }
+    }
+
+    override fun onDrawSelected(canvas: Canvas, calendar: Calendar?, x: Int, hasScheme: Boolean): Boolean {
+        canvas.drawCircle(x + mItemWidth / 2f, mItemHeight / 2f, mSelectRadius, mSelectStrokePaint)
         return true
     }
 
-    override fun onDrawScheme(canvas: Canvas, calendar: Calendar, x: Int, y: Int) {
+    override fun onDrawScheme(canvas: Canvas, calendar: Calendar, x: Int) {
         if (!calendar.isCurrentMonth) {
             return
         }
@@ -59,7 +55,7 @@ class HMonthView(context: Context) : MonthView(context) {
             it * perBarWidth
         }?.toInt()
         val xStart = x + (mItemWidth - Math.min(mItemWidth, maxWidth ?: mItemWidth)) / 2f
-        val yTop = y + mItemHeight / 2 + mSelectRadius
+        val yTop = mItemHeight / 2 + mSelectRadius
         calendar.schemes.forEachIndexed { index, scheme ->
             mSchemeLinePaint.color = scheme.shcemeColor
             val lineWidth = scheme.scheme.toInt() * perBarWidth
@@ -67,4 +63,5 @@ class HMonthView(context: Context) : MonthView(context) {
             canvas.drawLine(xStart, yInLine, xStart + lineWidth, yInLine, mSchemeLinePaint)
         }
     }
+
 }

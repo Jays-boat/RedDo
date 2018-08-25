@@ -10,5 +10,4 @@ class TypeConverterHelper {
     @TypeConverter
     fun int2EntryType(index: Int) = EntryType.values()[index]
 
-
 }
