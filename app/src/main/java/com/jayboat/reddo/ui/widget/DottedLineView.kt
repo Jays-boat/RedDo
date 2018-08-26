@@ -8,7 +8,7 @@ import android.view.View
 /*
  by Cynthia at 2018/8/21
  */
- class DottedLineView(context: Context?, attrs: AttributeSet?) : View(context, attrs){
+class DottedLineView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     private val mPaint = Paint()
     private val mPath = Path()
 
@@ -18,7 +18,7 @@ import android.view.View
             color = Color.parseColor("#EAEAEA")
             style = Paint.Style.STROKE
             strokeWidth = 1f
-            pathEffect = DashPathEffect(floatArrayOf(10f,10f),0f)
+            pathEffect = DashPathEffect(floatArrayOf(10f, 10f), 0f)
         }
     }
 
@@ -26,9 +26,9 @@ import android.view.View
         super.onDraw(canvas)
         mPath.apply {
             reset()
-            moveTo(width / 2f,0f)
+            moveTo(width / 2f, 0f)
             lineTo(width / 2f, height.toFloat())
         }
-        canvas.drawPath(mPath,mPaint)
+        canvas.drawPath(mPath, mPaint)
     }
 }

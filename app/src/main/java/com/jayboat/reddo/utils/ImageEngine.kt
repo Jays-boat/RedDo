@@ -35,7 +35,7 @@ class ImageEngine : ImageEngine {
     }
 
     override fun loadImage(context: Context, resizeX: Int, resizeY: Int, imageView: ImageView, uri: Uri) {
-        val options = RequestOptions.overrideOf(resizeX,resizeY).priority(Priority.HIGH)
+        val options = RequestOptions.overrideOf(resizeX, resizeY).priority(Priority.HIGH)
         Glide.with(context)
                 .load(uri)
                 .apply(options)
@@ -43,7 +43,7 @@ class ImageEngine : ImageEngine {
     }
 
     override fun loadAnimatedGifImage(context: Context, resizeX: Int, resizeY: Int, imageView: ImageView, uri: Uri) {
-        val options = RequestOptions.overrideOf(resizeX,resizeY).priority(Priority.HIGH)
+        val options = RequestOptions.overrideOf(resizeX, resizeY).priority(Priority.HIGH)
         Glide.with(context)
                 .load(uri)
                 .apply(options)

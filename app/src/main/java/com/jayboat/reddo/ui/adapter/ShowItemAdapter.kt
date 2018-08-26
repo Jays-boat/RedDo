@@ -4,15 +4,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jayboat.reddo.R
-import com.jayboat.reddo.appContext
 import com.jayboat.reddo.room.bean.Entry
-import com.jayboat.reddo.ui.viewholder.*
+import com.jayboat.reddo.ui.viewholder.FooterItemViewHolder
+import com.jayboat.reddo.ui.viewholder.LeftItemViewHolder
+import com.jayboat.reddo.ui.viewholder.NoneItemViewHolder
+import com.jayboat.reddo.ui.viewholder.RightItemViewHolder
 import com.jayboat.reddo.utils.screenHeight
 
 /*
  by Cynthia at 2018/8/21
  */
- class ShowItemAdapter(private var mData : List<Entry>, private var type : String,private var mListener:(id:Int)->Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ShowItemAdapter(private var mData: List<Entry>, private var type: String, private var mListener: (id: Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val leftType = 1
     private val rightType = 2
@@ -31,14 +33,10 @@ import com.jayboat.reddo.utils.screenHeight
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            leftType -> LeftItemViewHolder(LayoutInflater.from(appContext).
-                    inflate(R.layout.recycle_item_center_left,parent,false))
-            rightType -> RightItemViewHolder(LayoutInflater.from(appContext).
-                    inflate(R.layout.recycle_item_center_right,parent,false))
-            noneType -> NoneItemViewHolder(LayoutInflater.from(appContext).
-                    inflate(R.layout.recycle_item_none,parent,false),type)
-            else -> FooterItemViewHolder(LayoutInflater.from(appContext).
-                    inflate(R.layout.recycle_item_footer,parent,false))
+            leftType -> LeftItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycle_item_center_left, parent, false))
+            rightType -> RightItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycle_item_center_right, parent, false))
+            noneType -> NoneItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycle_item_none, parent, false), type)
+            else -> FooterItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycle_item_footer, parent, false))
         }
     }
 
@@ -78,13 +76,13 @@ import com.jayboat.reddo.utils.screenHeight
         }
     }
 
-    fun changeType(type: String,data:List<Entry>){
+    fun changeType(type: String, data: List<Entry>) {
         this.type = type
         mData = data
         notifyDataSetChanged()
     }
 
-    fun changeType(type:String){
+    fun changeType(type: String) {
         this.type = type
         notifyDataSetChanged()
     }

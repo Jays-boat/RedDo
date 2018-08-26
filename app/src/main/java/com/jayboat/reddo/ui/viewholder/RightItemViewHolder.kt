@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.recycle_item_center_right.view.*
 /*
  by Cynthia at 2018/8/22
  */
-class RightItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+class RightItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val shape by lazy {
         mapOf(
                 SimpleEntry.EntryType.TODO to R.drawable.ic_item_todo,
@@ -30,10 +30,10 @@ class RightItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
             tv_right_time.text = getDataString(data.simpleEntry.time)
             tv_left_title.text = data.simpleEntry.title
             iv_center_image.setImageDrawable(ContextCompat.getDrawable(appContext, shape[data.simpleEntry.type]!!))
-            if (data.imgList.isEmpty()){
+            if (data.imgList.isEmpty()) {
                 iv_left_image.visibility = View.GONE
             } else {
-                Log.i("image","${data.simpleEntry.id}:有图片！想不到吧！")
+                Log.i("image", "${data.simpleEntry.id}:有图片！想不到吧！")
                 Glide.with(appContext)
                         .load(data.imgList[0].uri)
                         .into(iv_left_image)

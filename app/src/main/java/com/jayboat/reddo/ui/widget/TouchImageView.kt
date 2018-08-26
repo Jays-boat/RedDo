@@ -2,25 +2,16 @@ package com.jayboat.reddo.ui.widget
 
 import android.app.Dialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Matrix
 import android.net.Uri
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
-import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import com.jayboat.reddo.R
-import com.jayboat.reddo.appContext
-import com.jayboat.reddo.ui.activity.EditActivity
 import com.jayboat.reddo.utils.screenHeight
 import com.jayboat.reddo.utils.screenWidth
-import com.jayboat.reddo.utils.sp
 import kotlinx.android.synthetic.main.dialog_delete.*
 
 /*
@@ -36,7 +27,7 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
     private var currentMode = -1
     private var isScale = false
     private val tag = "TouchImageView"
-    private var mRunnable:LongPressRunnable? = null
+    private var mRunnable: LongPressRunnable? = null
 
     var xLocation = 0f
     var yLocation = 0f
@@ -45,7 +36,7 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
     var cWidth = 0
     var cHeight = 0
     var isDelete = false
-    var mUri:Uri? = null
+    var mUri: Uri? = null
 
     init {
         scaleType = ScaleType.FIT_XY
@@ -54,8 +45,8 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val mWidth :Int
-        val mHeight :Int
+        val mWidth: Int
+        val mHeight: Int
         val widthMeasure: Int
         val heightMeasure: Int
         if (cWidth == 0 || cHeight == 0 || scalePro == 0f) {
@@ -76,7 +67,7 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
 
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (mRunnable != null){
+        if (mRunnable != null) {
             removeCallbacks(mRunnable)
         }
         when (event.action) {
@@ -84,7 +75,7 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
                 dx = event.x
                 dy = event.y
                 mRunnable = LongPressRunnable()
-                postDelayed(mRunnable,1000)
+                postDelayed(mRunnable, 1000)
             }
             MotionEvent.ACTION_MOVE -> {
                 if (event.pointerCount < 2) {
@@ -106,9 +97,9 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
                 } else {
                     currentMode = scaleMode
                     val currentDistance = distance(event)
-                    if (originDistance == 0f){
+                    if (originDistance == 0f) {
                         originDistance = currentDistance
-                    } else{
+                    } else {
                         if (currentDistance > 10f) {
                             scalePro = currentDistance / originDistance
                             Log.i("scale", "$scalePro")
@@ -163,12 +154,12 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
         override fun run() {
             Dialog(context).apply {
                 setContentView(R.layout.dialog_delete)
-                tv_dialog_sure.setOnClickListener{
+                tv_dialog_sure.setOnClickListener {
                     isDelete = true
                     requestLayout()
                     this.dismiss()
                 }
-                tv_dialog_cancel.setOnClickListener{this.dismiss()}
+                tv_dialog_cancel.setOnClickListener { this.dismiss() }
             }.show()
         }
     }

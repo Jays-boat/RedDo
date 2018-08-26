@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.recycle_item_center_left.view.*
 /*
  by Cynthia at 2018/8/22
  */
-class LeftItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+class LeftItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val shape by lazy {
         mapOf(
@@ -31,8 +31,8 @@ class LeftItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
             tv_time_left.text = getDataString(data.simpleEntry.time)
             tv_right_title.text = data.simpleEntry.title
             iv_center_image.setImageDrawable(ContextCompat.getDrawable(appContext, shape[data.simpleEntry.type]!!))
-            if (!data.imgList.isEmpty()){
-                Log.i("image","${data.simpleEntry.id}:有图片！想不到吧！")
+            if (!data.imgList.isEmpty()) {
+                Log.i("image", "${data.simpleEntry.id}:有图片！想不到吧！")
                 Glide.with(appContext)
                         .load(data.imgList[0].uri)
                         .into(iv_right_image)

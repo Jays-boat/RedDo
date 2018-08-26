@@ -1,11 +1,10 @@
 package com.jayboat.reddo.room.bean
 
 import android.arch.persistence.room.*
-import android.net.Uri
 
 @Entity(
         tableName = "image",
-        indices = [Index("entry_id",unique = false)],
+        indices = [Index("entry_id", unique = false)],
         foreignKeys = [
             ForeignKey(entity = SimpleEntry::class,
                     parentColumns = ["id"],

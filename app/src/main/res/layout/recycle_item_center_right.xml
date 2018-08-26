@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:background="#FAFAFA"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
@@ -46,6 +45,7 @@
         android:layout_toEndOf="@id/iv_left_image"
         android:layout_centerVertical="true"
         android:gravity="center"
+        android:textColor="@color/calendar_rv_text"
         tools:text="冥想"/>
 
 

@@ -24,70 +24,72 @@ import org.jetbrains.anko.*
  */
 class CalendarRecycleAdapter(
         private val context: AppCompatActivity,
-        private val vm:EntryViewModel,
+        private val vm: EntryViewModel,
         entryList: LiveData<List<Entry>>
 ) : RecyclerView.Adapter<CalendarEntryHolder>() {
     var entryList: LiveData<List<Entry>> = entryList
         set(value) {
             field.removeObserver(listener)
             field = value
-            field.observe(context,listener)
+            field.observe(context, listener)
             notifyDataSetChanged()
         }
 
     private val listener = Observer<List<Entry>> {
         notifyDataSetChanged()
     }
+
     init {
         this.entryList.observe(context, listener)
     }
 
-    override fun getItemViewType(position: Int) = entryList.value?.get(position)?.simpleEntry?.type?.ordinal ?: 0
+    override fun getItemViewType(position: Int) = entryList.value?.get(position)?.simpleEntry?.type?.ordinal
+            ?: 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)= CalendarEntryHolder(
-        parent.context.relativeLayout {
-            val time =  textView {
-                id = R.id.tv_item_todo_time
-                compoundDrawablePadding = dp(25f).toInt()
-                textSize = 12f
-            }.lparams(width = wrapContent, height = wrapContent){
-                marginStart = dp(5f).toInt()
-                centerVertically()
-            }
-            if (SimpleEntry.EntryType.values()[viewType] == EntryType.TODO) {
-                verticalLayout {
-                    id = R.id.ll_item_todo
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CalendarEntryHolder(
+            parent.context.relativeLayout {
+                val time = textView {
+                    id = R.id.tv_item_todo_time
+                    compoundDrawablePadding = dp(25f).toInt()
+                    textSize = 12f
+                }.lparams(width = wrapContent, height = wrapContent) {
+                    marginStart = dp(5f).toInt()
+                    centerVertically()
+                }
+                if (SimpleEntry.EntryType.values()[viewType] == EntryType.TODO) {
+                    verticalLayout {
+                        id = R.id.ll_item_todo
+                        textView {
+                            id = R.id.tv_item_todo_title
+                            textSize = 14f
+                            textColorResource = R.color.calendar_rv_text
+                        }.lparams(width = matchParent, height = wrapContent)
+                        view {
+                            backgroundResource = R.drawable.line
+                        }.lparams(width = dp(200f).toInt(), height = dp(2f).toInt()) {
+                            verticalMargin = dp(4f).toInt()
+                        }
+                    }.lparams(width = matchParent, height = wrapContent) {
+                        marginStart = dp(50f).toInt()
+                        centerVertically()
+                        endOf(time)
+                    }
+                } else {
                     textView {
                         id = R.id.tv_item_todo_title
                         textSize = 14f
                         textColorResource = R.color.calendar_rv_text
-                    }.lparams(width = matchParent, height = wrapContent)
-                    view {
-                        backgroundResource = R.drawable.line
-                    }.lparams(width = dp(200f).toInt(), height = dp(2f).toInt()) {
-                        verticalMargin = dp(4f).toInt()
+                    }.lparams(width = matchParent, height = wrapContent) {
+                        marginStart = dp(50f).toInt()
+                        endOf(time)
                     }
-                }.lparams(width = matchParent, height = wrapContent) {
-                    marginStart = dp(50f).toInt()
-                    centerVertically()
-                    endOf(time)
                 }
-            } else {
-                textView {
-                    id = R.id.tv_item_todo_title
-                    textSize = 14f
-                    textColorResource = R.color.calendar_rv_text
-                }.lparams(width = matchParent, height = wrapContent) {
-                    marginStart = dp(50f).toInt()
-                    endOf(time)
-                }
-            }
-            lparams(matchParent, wrapContent){
-                verticalPadding = dp(20f).toInt()
-                horizontalMargin = dp(15f).toInt()
+                lparams(matchParent, wrapContent) {
+                    verticalPadding = dp(20f).toInt()
+                    horizontalMargin = dp(15f).toInt()
 
-            }
-        },vm
+                }
+            }, vm
     )
 
     override fun getItemCount() = entryList.value?.size ?: 0

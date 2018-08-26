@@ -89,6 +89,7 @@ class DailyCameraActivity : AppCompatActivity() {
                 jcamera.onResume()
             } else {
                 show("你这点权限，我很难帮你办事啊╮(╯3╰)╭")
+                finish()
             }
         }
     }

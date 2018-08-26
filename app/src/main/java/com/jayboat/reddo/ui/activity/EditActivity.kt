@@ -23,17 +23,19 @@ import kotlinx.android.synthetic.main.activity_edit.*
 class EditActivity : BaseActivity() {
 
     val REQUEST_CHOOSE = 0
-    private lateinit var urls : MutableList<Uri>
+    private lateinit var urls: MutableList<Uri>
     private val entryViewModel by lazy { ViewModelProviders.of(this@EditActivity).get(EntryViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
-        val id = intent.getIntExtra("id",-1)
-        if (id != -1){
+        val id = intent.getIntExtra("id", -1)
+        if (id != -1) {
             entryViewModel.getEntryById(id).observe(this, Observer {
-                if (it == null) { return@Observer }
+                if (it == null) {
+                    return@Observer
+                }
                 el_edit.getListener().loadData(it)
             })
         }
@@ -44,9 +46,10 @@ class EditActivity : BaseActivity() {
             val v: View? = currentFocus
             if (imm != null && v != null) {
                 imm.hideSoftInputFromWindow(v.applicationWindowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-            } }
+            }
+        }
         iv_edit_album.setOnClickListener {
-            if (requestPermission()){
+            if (requestPermission()) {
                 Matisse.from(this@EditActivity)
                         .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
                         .countable(true)
@@ -55,7 +58,7 @@ class EditActivity : BaseActivity() {
                         .theme(R.style.Matisse_Zhihu)
                         .imageEngine(ImageEngine())
                         .capture(true)
-                        .captureStrategy(CaptureStrategy(true,"com.jayboat.reddo.fileprovider"))
+                        .captureStrategy(CaptureStrategy(true, "com.jayboat.reddo.fileprovider"))
                         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                         .forResult(REQUEST_CHOOSE)
             }
@@ -70,7 +73,7 @@ class EditActivity : BaseActivity() {
         }
     }
 
-    private fun requestPermission() : Boolean {
+    private fun requestPermission(): Boolean {
         var isPermission = false
         RxPermissions(this@EditActivity)
                 .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -85,6 +88,7 @@ class EditActivity : BaseActivity() {
                 }
         return isPermission
     }
+
 
     override fun onDestroy() {
         if (intent.getIntExtra("id", -1) == -1) {

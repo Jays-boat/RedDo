@@ -1,5 +1,7 @@
 package com.jayboat.reddo.ui.activity
 
+import android.annotation.SuppressLint
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -8,20 +10,18 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.PopupWindow
 import com.jayboat.reddo.R
 import com.jayboat.reddo.base.BaseActivity
-import com.jayboat.reddo.room.bean.Entry
 import com.jayboat.reddo.ui.adapter.ShowItemAdapter
 import com.jayboat.reddo.utils.*
 import com.jayboat.reddo.viewmodel.DateViewModel
 import com.jayboat.reddo.viewmodel.EntryViewModel
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.include_top.*
 import kotlinx.android.synthetic.main.popup_search.view.*
 
 
@@ -32,6 +32,7 @@ class MainActivity : BaseActivity() {
     private val dateModel by lazy { ViewModelProviders.of(this@MainActivity).get(DateViewModel::class.java) }
     private val entryModel by lazy { ViewModelProviders.of(this@MainActivity).get(EntryViewModel::class.java) }
 
+    private val searchInputer by lazy { MutableLiveData<String>() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +40,12 @@ class MainActivity : BaseActivity() {
         type = TYPE_ALL
         entryModel.entrys.observe(this, Observer {
             val list = it ?: ArrayList()
-            mAdapter.changeType(type,list)
+            mAdapter.changeType(type, list)
         })
 
-        mAdapter = ShowItemAdapter(ArrayList(), type){
-            startActivity(Intent(this@MainActivity,EditActivity::class.java)
-                    .putExtra("id",it))
+        mAdapter = ShowItemAdapter(ArrayList(), type) {
+            startActivity(Intent(this@MainActivity, EditActivity::class.java)
+                    .putExtra("id", it))
         }
 
         rv_main.apply {
@@ -54,12 +55,10 @@ class MainActivity : BaseActivity() {
 
         dateModel.nowDate.observe(this, Observer { tv_main_date.text = it })
 
-        iv_main_calendar.apply {
-            setImageResource(R.drawable.icon_calendar)
-            setOnClickListener {
-                startCalendarActivity(this@MainActivity, this@MainActivity.top)
-            }
+        iv_main_calendar.setOnClickListener {
+            startCalendarActivity(this@MainActivity)
         }
+
 
 
         gp_main.setOnCheckedChangeListener { _, checkedId ->
@@ -80,11 +79,17 @@ class MainActivity : BaseActivity() {
         iv_main_add.setOnClickListener {
             startActivity(Intent(this@MainActivity, EditActivity::class.java))
         }
+
+        searchInputer.observe(this, entryModel.searchEntrys(Consumer {
+            //todo 处理搜索结果
+        }))
+
     }
 
 
+    @SuppressLint("InflateParams")
     private fun getPopupWindow() {
-        val view = LayoutInflater.from(applicationContext).inflate(R.layout.popup_search, null)
+        val view = LayoutInflater.from(this).inflate(R.layout.popup_search, null)
         PopupWindow(view, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
                 .apply {
                     isOutsideTouchable = true
@@ -97,12 +102,10 @@ class MainActivity : BaseActivity() {
                         mAdapter.changeType(type)
                     }
                     view.et_search.addTextChangedListener(object : TextWatcher {
-                        override fun afterTextChanged(s: Editable?) = Unit
-
-                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-
+                        override fun afterTextChanged(s: Editable?) {}
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                            // todo 监听关键字进行显示
+                            searchInputer.value = s.toString()
                             mAdapter.changeType(TYPE_SEARCH)
                         }
                     })

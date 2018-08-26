@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="week_bar_text_color">#dddddd</color>
+
+    <color name="calendar_workday">#e1e1e1</color>
+    <color name="calendar_weekend">#7e7e7e</color>
+
+    <color name="calendar_rv_text">#e1e1e1</color>
+
+    <color name="weak_word_gray">#818181</color>
+
+    <color name="activity_bg">#3c3c3c</color>
+
+    <color name="todo_item_text">#e1e1e1</color>
+
+</resources>

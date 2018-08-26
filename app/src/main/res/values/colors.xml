@@ -21,9 +21,8 @@
     <color name="calendar_weekend">#888888</color>
 
     <color name="calendar_rv_text">#333333</color>
-    <color name="calendar_rv_text_light" >#B6B5B5</color>
 
-    <color name="calendar_bg" >#f9f9f9</color>
+    <color name="activity_bg">#f9f9f9</color>
 
     <color name="todo_item_text" >#848484</color>
 

@@ -22,7 +22,7 @@ fun fakeAll(size: Int, vm: EntryViewModel) = Schedulers.newThread().scheduleDire
     val list = mutableListOf<Entry>()
     val types = values()
     repeat(size) {
-        list.add(Entry().apply{
+        list.add(Entry().apply {
             val sb = StringBuilder()
             simpleEntry = SimpleEntry().apply {
                 type = types[(Math.random() * types.size).toInt()]
@@ -34,8 +34,8 @@ fun fakeAll(size: Int, vm: EntryViewModel) = Schedulers.newThread().scheduleDire
             when (simpleEntry.type) {
                 TODO -> {
                     val mTodoList = mutableListOf<Todo>()
-                    repeat((Math.random() * 5).toInt()) {i ->
-                        mTodoList.add(Todo("${i+1}. ${simpleEntry.time.day}假装有事要做,告辞"))
+                    repeat((Math.random() * 5).toInt()) { i ->
+                        mTodoList.add(Todo("${i + 1}. ${simpleEntry.time.day}假装有事要做,告辞"))
                     }
                     todoList = mTodoList
                     mTodoList.forEach { t ->
@@ -43,9 +43,9 @@ fun fakeAll(size: Int, vm: EntryViewModel) = Schedulers.newThread().scheduleDire
                         ?: ""}] ${t.describe}")
                     }
                 }
-                ESSAY,AGENDA ->
+                ESSAY, AGENDA ->
                     //todo 加图片和位置
-                    repeat((Math.random()*5).toInt()){ i ->
+                    repeat((Math.random() * 5).toInt()) { i ->
                         sb.append("假装我有详情信息,这是第${i + 1}行\n")
                     }
                 DAILY -> {

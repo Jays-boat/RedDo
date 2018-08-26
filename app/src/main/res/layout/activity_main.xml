@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_main"
+    android:background="@color/activity_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,21 +14,75 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/iv_main_calendar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent" />
 
-    </android.support.v7.widget.RecyclerView>
+    <ImageView
+        android:id="@+id/iv_main_search"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/shape_circle"
+        android:padding="6dp"
+        android:src="@drawable/icon_search"
+        android:transitionName="search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_main_calendar"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_main_calendar"
+        tools:ignore="ContentDescription" />
 
-    <include
-        android:id="@+id/top"
-        layout="@layout/include_top" />
+    <ImageView
+        android:id="@+id/iv_main_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:padding="8dp"
+        android:transitionName="switch"
+        android:src="@drawable/icon_calendar"
+        app:layout_constraintEnd_toStartOf="@+id/iv_main_tag"
+        app:layout_constraintStart_toEndOf="@+id/tv_main_date"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_main_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_round_rectangle"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="4dp"
+        android:textColor="#fff"
+        android:textSize="12sp"
+        android:transitionName="watch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_main_calendar"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_main_calendar"
+        tools:text="08/21周二 13:20" />
+
+    <ImageView
+        android:id="@+id/iv_main_tag"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/shape_circle"
+        android:padding="6dp"
+        android:src="@drawable/icon_tag"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_main_calendar"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_main_calendar"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/iv_main_setting"
@@ -37,6 +92,7 @@
         android:background="@drawable/shape_circle"
         android:padding="6dp"
         android:src="@drawable/icon_setting"
+        android:transitionName="setting"
         app:layout_constraintBottom_toBottomOf="@id/guideline1"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="ContentDescription" />
@@ -49,6 +105,7 @@
         android:background="@drawable/shape_circle"
         android:padding="6dp"
         android:src="@drawable/icon_add"
+        android:transitionName="add"
         app:layout_constraintBottom_toBottomOf="@id/guideline1"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="ContentDescription" />
@@ -139,12 +196,5 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.94" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.065" />
 
 </android.support.constraint.ConstraintLayout>

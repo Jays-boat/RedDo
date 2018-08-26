@@ -12,7 +12,7 @@ import com.jayboat.reddo.utils.dp
  * Date: 2018/8/25 15:35
  * Description: 日历页下方RV分割线
  */
-class CalendarEntryDecoration : RecyclerView.ItemDecoration(){
+class CalendarEntryDecoration : RecyclerView.ItemDecoration() {
     private val p = Paint().apply {
         color = Color.parseColor("#C4C4C4")
         isAntiAlias = true

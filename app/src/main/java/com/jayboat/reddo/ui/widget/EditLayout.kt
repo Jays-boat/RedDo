@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.net.Uri
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.widget.EditText
@@ -15,7 +14,6 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.jayboat.reddo.room.bean.Entry
 import com.jayboat.reddo.room.bean.Image
-import com.jayboat.reddo.room.bean.SimpleEntry
 import com.jayboat.reddo.room.bean.SimpleEntry.EntryType.*
 import com.jayboat.reddo.utils.*
 
@@ -27,7 +25,7 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
 
     private val tag = "EditLayout"
 
-    private var type : String = ""
+    private var type: String = ""
     private var mPictures: MutableList<TouchImageView> = mutableListOf()
     private var mListener: OnPictureListener = this
     private var mEditText: EditText = EditText(context, null).apply {
@@ -45,8 +43,8 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
         type = TYPE_ESSAY
     }
 
-    override fun loadData(data:Entry) {
-        type = when(data.simpleEntry.type){
+    override fun loadData(data: Entry) {
+        type = when (data.simpleEntry.type) {
             ESSAY -> TYPE_ESSAY
             TODO -> TYPE_TODO
             AGENDA -> TYPE_AGENDA
@@ -74,10 +72,10 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
         }
     }
 
-    override fun saveData()= Entry().apply {
+    override fun saveData() = Entry().apply {
         simpleEntry.title = mEditText.text.split("\n")[0]
         simpleEntry.detail = mEditText.text.toString()
-        simpleEntry.type = when(type){
+        simpleEntry.type = when (type) {
             TYPE_ESSAY -> ESSAY
             TYPE_AGENDA -> AGENDA
             TYPE_DAILY -> DAILY
@@ -93,7 +91,6 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
             }
         }
     }
-
 
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -134,7 +131,7 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
 }
 
 interface OnPictureListener {
-    fun loadData(data:Entry)
+    fun loadData(data: Entry)
     fun addPicture(urls: List<Uri>)
     fun saveData(): Entry
 }

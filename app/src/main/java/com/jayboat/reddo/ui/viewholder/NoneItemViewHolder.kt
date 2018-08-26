@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.recycle_item_none.view.*
 /*
  by Cynthia at 2018/8/22
  */
-class NoneItemViewHolder(itemView : View, type :String) : RecyclerView.ViewHolder(itemView){
+class NoneItemViewHolder(itemView: View, type: String) : RecyclerView.ViewHolder(itemView) {
 
     private val info by lazy {
         mapOf(

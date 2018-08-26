@@ -4,7 +4,7 @@ import android.arch.persistence.room.*
 
 @Entity(
         tableName = "todo",
-        indices = [Index("entry_id",unique = false)],
+        indices = [Index("entry_id", unique = false)],
         foreignKeys = [
             ForeignKey(entity = SimpleEntry::class,
                     parentColumns = ["id"],

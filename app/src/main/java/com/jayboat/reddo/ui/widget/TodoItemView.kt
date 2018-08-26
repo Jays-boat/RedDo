@@ -121,7 +121,7 @@ class TodoItemView constructor(
                     checkbox_todo.setBackgroundResource(R.drawable.ic_checkbox_checked)
                     line.backgroundColor = Color.parseColor("#3FA55C")
                     line.visibility = View.VISIBLE
-                    ObjectAnimator.ofFloat(line, "translationX", this.width.toFloat(),0f).apply {
+                    ObjectAnimator.ofFloat(line, "translationX", this.width.toFloat(), 0f).apply {
                         duration = 100
                         addListener(object : AnimatorListenerAdapter() {
                             override fun onAnimationEnd(animation: Animator?) {
