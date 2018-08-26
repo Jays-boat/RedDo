@@ -3,7 +3,7 @@ package com.jayboat.reddo.ui.viewholder
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.jayboat.reddo.*
+import com.jayboat.reddo.R
 import com.jayboat.reddo.utils.*
 import kotlinx.android.synthetic.main.recycle_item_none.view.*
 

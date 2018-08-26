@@ -2,32 +2,31 @@ package com.jayboat.reddo.ui.adapter
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
-import android.graphics.drawable.GradientDrawable
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.jayboat.reddo.R
 import com.jayboat.reddo.room.bean.Entry
 import com.jayboat.reddo.room.bean.SimpleEntry
 import com.jayboat.reddo.room.bean.SimpleEntry.EntryType
-import com.jayboat.reddo.ui.viewholder.TodoListHolder
+import com.jayboat.reddo.ui.viewholder.CalendarEntryHolder
 import com.jayboat.reddo.utils.dp
-import kotlinx.android.synthetic.main.recycle_item_center_right.view.*
+import com.jayboat.reddo.viewmodel.EntryViewModel
 import org.jetbrains.anko.*
 
 /**
  * Author: Hosigus
- * Bolg: https://www.jianshu.com/u/c3bf1852cbd8
+ * Blog: https://www.jianshu.com/u/c3bf1852cbd8
  * Date: 2018/8/24 0:15
  * Description: 日历列表RV的Adapter
  */
 class CalendarRecycleAdapter(
         private val context: AppCompatActivity,
+        private val vm:EntryViewModel,
         entryList: LiveData<List<Entry>>
-) : RecyclerView.Adapter<TodoListHolder>() {
+) : RecyclerView.Adapter<CalendarEntryHolder>() {
     var entryList: LiveData<List<Entry>> = entryList
         set(value) {
             field.removeObserver(listener)
@@ -45,7 +44,7 @@ class CalendarRecycleAdapter(
 
     override fun getItemViewType(position: Int) = entryList.value?.get(position)?.simpleEntry?.type?.ordinal ?: 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)= TodoListHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)= CalendarEntryHolder(
         parent.context.relativeLayout {
             val time =  textView {
                 id = R.id.tv_item_todo_time
@@ -88,31 +87,31 @@ class CalendarRecycleAdapter(
                 horizontalMargin = dp(15f).toInt()
 
             }
-        }
+        },vm
     )
 
     override fun getItemCount() = entryList.value?.size ?: 0
 
-    override fun onBindViewHolder(holder: TodoListHolder, position: Int) {
+    override fun onBindViewHolder(holder: CalendarEntryHolder, position: Int) {
         val entry = entryList.value?.get(position) ?: return
         val simpleEntry = entry.simpleEntry
 
         holder.itemView.apply {
-            val time = findViewById<TextView>(R.id.tv_item_todo_time)
-            val title = findViewById<TextView>(R.id.tv_item_todo_title)
-            time.setCompoundDrawables(
-                    ContextCompat.getDrawable(context, when (simpleEntry.type) {
-                        EntryType.ESSAY -> R.drawable.ic_point_essay
-                        EntryType.TODO -> R.drawable.ic_point_todo
-                        EntryType.AGENDA -> R.drawable.ic_point_agenda
-                        EntryType.DAILY -> R.drawable.ic_point_daily
-                    })?.apply {
-                        setBounds(0, 0, 20, 20)
-                    }
-                    , null, null, null)
-            time.textColor = simpleEntry.type.color
-            time.text = String.format("%02d:%02d", simpleEntry.time.hour, simpleEntry.time.minute)
-            title.text = simpleEntry.title
+            findViewById<TextView>(R.id.tv_item_todo_time).apply {
+                textColor = simpleEntry.type.color
+                text = String.format("%02d:%02d", simpleEntry.time.hour, simpleEntry.time.minute)
+                setCompoundDrawables(
+                        ContextCompat.getDrawable(context, when (simpleEntry.type) {
+                            EntryType.ESSAY -> R.drawable.ic_point_essay
+                            EntryType.TODO -> R.drawable.ic_point_todo
+                            EntryType.AGENDA -> R.drawable.ic_point_agenda
+                            EntryType.DAILY -> R.drawable.ic_point_daily
+                        })?.apply {
+                            setBounds(0, 0, 20, 20)
+                        }
+                        , null, null, null)
+            }
+            findViewById<TextView>(R.id.tv_item_todo_title).text = simpleEntry.title
         }
 
         if (simpleEntry.type == EntryType.TODO) {

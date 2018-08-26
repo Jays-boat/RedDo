@@ -18,18 +18,21 @@ interface EntryDao {
     @Query("SELECT id FROM entry ORDER BY id DESC LIMIT 1")
     fun getLastID(): Int
 
-    @Query("SELECT * FROM entry")
+    @Query("SELECT * FROM entry ORDER BY year,month,day,hour,minute,second")
     fun selectSimpleEntryList(): Flowable<List<SimpleEntry>>
 
-    @Query("SELECT * FROM entry")
+    @Query("SELECT * FROM entry ORDER BY year,month,day,hour,minute,second")
     @Transaction
     fun selectEntryList(): LiveData<List<Entry>>
 
-    @Query("SELECT * FROM entry where year = :year AND month = :month AND day = :day")
+    @Query("SELECT * FROM entry WHERE id = :id")
+    fun selectEntryWithId(id: Int): LiveData<Entry>
+
+    @Query("SELECT * FROM entry WHERE year = :year AND month = :month AND day = :day")
     @Transaction
     fun selectEntryListWithDate(year: Int, month: Int, day: Int): LiveData<List<Entry>>
 
-    @Query("SELECT * FROM entry where type = :t")
+    @Query("SELECT * FROM entry WHERE type = :t ORDER BY year,month,day,hour,minute,second")
     @Transaction
     @TypeConverters(TypeConverterHelper::class)
     fun selectEntryListWithType(t: SimpleEntry.EntryType): LiveData<List<Entry>>
@@ -39,4 +42,5 @@ interface EntryDao {
 
     @Delete
     fun delEntry(vararg e: SimpleEntry)
+
 }

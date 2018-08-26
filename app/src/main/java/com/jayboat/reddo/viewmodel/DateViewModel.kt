@@ -3,9 +3,7 @@ package com.jayboat.reddo.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit

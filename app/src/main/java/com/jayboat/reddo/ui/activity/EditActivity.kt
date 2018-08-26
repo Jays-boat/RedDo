@@ -1,6 +1,7 @@
 package com.jayboat.reddo.ui.activity
 
 import android.Manifest
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
@@ -31,8 +32,10 @@ class EditActivity : BaseActivity() {
 
         val id = intent.getIntExtra("id",-1)
         if (id != -1){
-//          通过id获取viewModel里面的内容并加载
-            el_edit.getListener().loadData()
+            entryViewModel.getEntryById(id).observe(this, Observer {
+                if (it == null) { return@Observer }
+                el_edit.getListener().loadData(it)
+            })
         }
 
         iv_edit_back.setOnClickListener { finish() }
@@ -84,7 +87,11 @@ class EditActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        entryViewModel.insertEntry(el_edit.getListener().saveData())
+        if (intent.getIntExtra("id", -1) == -1) {
+            entryViewModel.insertEntry(el_edit.getListener().saveData())
+        } else {
+            entryViewModel.updateEntry(el_edit.getListener().saveData())
+        }
         super.onDestroy()
     }
 }

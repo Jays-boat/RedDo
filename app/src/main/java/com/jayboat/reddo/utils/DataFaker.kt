@@ -6,11 +6,10 @@ import com.jayboat.reddo.room.bean.SimpleEntry.EntryType.*
 import com.jayboat.reddo.room.bean.Todo
 import com.jayboat.reddo.viewmodel.EntryViewModel
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 
 /**
  * Author: Hosigus
- * Bolg: https://www.jianshu.com/u/c3bf1852cbd8
+ * Blog: https://www.jianshu.com/u/c3bf1852cbd8
  * Date: 2018/8/24 13:40
  * Description: 伪造测试数据，向数据库加入一堆东西
  */
@@ -36,7 +35,7 @@ fun fakeAll(size: Int, vm: EntryViewModel) = Schedulers.newThread().scheduleDire
                 TODO -> {
                     val mTodoList = mutableListOf<Todo>()
                     repeat((Math.random() * 5).toInt()) {i ->
-                        mTodoList.add(Todo("${i+1}. 假装有事要做,告辞"))
+                        mTodoList.add(Todo("${i+1}. ${simpleEntry.time.day}假装有事要做,告辞"))
                     }
                     todoList = mTodoList
                     mTodoList.forEach { t ->

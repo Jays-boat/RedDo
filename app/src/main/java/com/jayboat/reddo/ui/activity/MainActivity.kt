@@ -54,9 +54,13 @@ class MainActivity : BaseActivity() {
 
         dateModel.nowDate.observe(this, Observer { tv_main_date.text = it })
 
-        iv_main_calendar.setOnClickListener {
-            startActivity(Intent(this@MainActivity, CalendarActivity::class.java))
+        iv_main_calendar.apply {
+            setImageResource(R.drawable.icon_calendar)
+            setOnClickListener {
+                startCalendarActivity(this@MainActivity, this@MainActivity.top)
+            }
         }
+
 
         gp_main.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {

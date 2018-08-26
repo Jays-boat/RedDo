@@ -1,7 +1,7 @@
 package com.jayboat.reddo.utils
 
 import com.jayboat.reddo.room.bean.SimpleEntry.RedDate
-import java.util.Calendar
+import java.util.*
 
 val nowDate: RedDate
     get() = RedDate().apply {

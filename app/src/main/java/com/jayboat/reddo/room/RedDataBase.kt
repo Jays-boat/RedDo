@@ -2,7 +2,10 @@ package com.jayboat.reddo.room
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
-import com.jayboat.reddo.room.bean.*
+import com.jayboat.reddo.room.bean.Image
+import com.jayboat.reddo.room.bean.SimpleEntry
+import com.jayboat.reddo.room.bean.TextInfo
+import com.jayboat.reddo.room.bean.Todo
 import com.jayboat.reddo.room.dao.EntryDao
 import com.jayboat.reddo.room.dao.ImageDao
 import com.jayboat.reddo.room.dao.TextInfoDao

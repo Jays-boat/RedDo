@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/calendar_bg"
     tools:context=".ui.activity.MainActivity">
+
+    <include android:id="@+id/top"
+        layout="@layout/include_top"/>
 
     <ImageView
         android:id="@+id/arrows_left"
@@ -30,7 +34,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top"
         tools:text="八月 2018" />
 
     <ImageView
@@ -52,7 +56,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:background="#f9f9f9"
         android:orientation="vertical"
         app:calendar_content_view_id="@+id/rv_calendar"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -80,11 +83,13 @@
             app:year_view_month_text_size="20sp"
             app:year_view_scheme_color="@color/calendar_select" />
 
-        <android.support.v7.widget.RecyclerView
+        <com.jayboat.reddo.ui.widget.NotAnnoyRecycleView
             android:id="@+id/rv_calendar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#f9f9f9" />
+            android:background="@color/calendar_bg" />
     </com.haibin.calendarview.CalendarLayout>
+
+    <include layout="@layout/include_bottom"/>
 
 </android.support.constraint.ConstraintLayout>

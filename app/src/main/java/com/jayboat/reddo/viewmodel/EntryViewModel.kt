@@ -1,12 +1,13 @@
 package com.jayboat.reddo.viewmodel
 
-import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.haibin.calendarview.Calendar
 import com.jayboat.reddo.redDataBase
 import com.jayboat.reddo.room.bean.*
 import com.jayboat.reddo.room.bean.SimpleEntry.EntryType.*
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class EntryViewModel : ViewModel() {
@@ -14,6 +15,33 @@ class EntryViewModel : ViewModel() {
     private val imageDao by lazy { redDataBase.getImageDao() }
     private val todoDao by lazy { redDataBase.getTodoDao() }
     private val textInfoDao by lazy { redDataBase.getTextInfoDao() }
+
+    val schemeDates by lazy {
+        val liveData = MutableLiveData<Map<String, Calendar>>()
+        simpleEntrys.observeOn(Schedulers.io())
+                .map { list ->
+                    val map = mutableMapOf<String, Calendar>()
+                    list.asSequence().groupBy { it.time.year to (it.time.month to it.time.day) }
+                            .map { timeMap ->
+                                Calendar().apply {
+                                    timeMap.key.let {
+                                        year = it.first
+                                        month = it.second.first
+                                        day = it.second.second
+                                    }
+                                    timeMap.value.groupBy { it.type }.forEach { t, tList ->
+                                        addScheme(t.color, tList.size.toString())
+                                    }
+                                }
+                            }.forEach {
+                                map[it.toString()] = it
+                            }
+                    return@map map
+                }.observeOn(AndroidSchedulers.mainThread()).subscribe {
+                    liveData.value = it
+                }
+        return@lazy liveData
+    }
 
     val simpleEntrys by lazy { entryDao.selectSimpleEntryList() }
 
@@ -27,12 +55,12 @@ class EntryViewModel : ViewModel() {
 
     val dailyEntrys by lazy { entryDao.selectEntryListWithType(DAILY) }
 
-    fun getEntrysByDate(redDate: SimpleEntry.RedDate): LiveData<List<Entry>> {
-        val (y, m, d) = redDate
-        return entryDao.selectEntryListWithDate(y, m, d)
-    }
+    fun getEntryById(id: Int)  = entryDao.selectEntryWithId(id)
 
-    fun getEntrysByDate(date: Calendar): LiveData<List<Entry>> = entryDao.selectEntryListWithDate(date.year, date.month, date.day)
+    fun getEntrysByDate(redDate: SimpleEntry.RedDate) = entryDao.selectEntryListWithDate(redDate.year, redDate.month, redDate.day)
+
+
+    fun getEntrysByDate(date: Calendar) = entryDao.selectEntryListWithDate(date.year, date.month, date.day)
 
     fun delEntry(vararg e: SimpleEntry) = Schedulers.io().scheduleDirect { entryDao.delEntry(*e) }
 
@@ -125,4 +153,5 @@ class EntryViewModel : ViewModel() {
         }
     }
 
+    fun updateTodo(todo: Todo) = Schedulers.io().scheduleDirect{ todoDao.updateTodo(todo)}
 }
