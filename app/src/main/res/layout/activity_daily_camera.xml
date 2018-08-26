@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 这些app属性竟然没写直接设置的接口，搞得非得写个xml -->
+<com.cjt2325.cameralibrary.JCameraView android:id="@+id/jcamera"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:duration_max="8000"
+    app:iconMargin="20dp"
+    app:iconSize="30dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />
