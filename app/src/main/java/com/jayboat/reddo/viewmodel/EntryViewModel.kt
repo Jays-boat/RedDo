@@ -39,35 +39,35 @@ class EntryViewModel : ViewModel() {
     fun insertSimpleEntry(vararg e: SimpleEntry) = Schedulers.io().scheduleDirect { entryDao.insertEntry(*e) }
 
     fun insertEntry(e: Entry) = Schedulers.io().scheduleDirect {
-        e.apply {
-            entryDao.insertEntry(simpleEntry)
-            when (simpleEntry.type) {
-                ESSAY, AGENDA -> {
-                    imageDao.insertImages(imgList)
-                    textInfoDao.insertTextInfoList(textInfoList)
-                }
-                TODO -> todoDao.insertTodoList(todoList)
-                DAILY -> {
+        Observable.create<Int>{
+            entryDao.insertEntry(e.simpleEntry)
+            it.onNext(entryDao.getLastID())
+        }.subscribe { id ->
+            e.apply {
+                when (simpleEntry.type) {
+                    ESSAY, AGENDA -> {
+                        textInfoList.forEach { it.entryId = id }
+                        imgList.forEach { it.entryId = id }
+                        textInfoDao.insertTextInfoList(textInfoList)
+                        imageDao.insertImages(imgList)
+                    }
+                    TODO -> {
+                        todoList.forEach { it.entryId = id }
+                        todoDao.insertTodoList(todoList)
+                    }
+                    DAILY -> {
+                    }
                 }
             }
         }
+
     }
 
     fun insertEntrys(vararg e: Entry) {
         Observable.create<Int> { ob ->
             if (e.size < 2) {
                 if (e.size == 1) {
-                    e[0].apply {
-                        entryDao.insertEntry(simpleEntry)
-                        when (simpleEntry.type) {
-                            ESSAY, AGENDA -> {
-                                imageDao.insertImages(imgList)
-                                textInfoDao.insertTextInfoList(textInfoList)
-                            }
-                            TODO -> todoDao.insertTodoList(todoList)
-                            DAILY -> { }
-                        }
-                    }
+                    insertEntry(e[0])
                 }
                 return@create
             }

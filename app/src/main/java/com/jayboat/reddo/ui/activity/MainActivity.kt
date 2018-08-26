@@ -8,15 +8,18 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.PopupWindow
-import com.jayboat.reddo.*
+import com.jayboat.reddo.R
 import com.jayboat.reddo.base.BaseActivity
+import com.jayboat.reddo.room.bean.Entry
 import com.jayboat.reddo.ui.adapter.ShowItemAdapter
 import com.jayboat.reddo.utils.*
 import com.jayboat.reddo.viewmodel.DateViewModel
+import com.jayboat.reddo.viewmodel.EntryViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.include_top.*
 import kotlinx.android.synthetic.main.popup_search.view.*
@@ -26,15 +29,23 @@ class MainActivity : BaseActivity() {
 
     lateinit var type: String
     lateinit var mAdapter: ShowItemAdapter
-    private var mData = ArrayList<String>()
     private val dateModel by lazy { ViewModelProviders.of(this@MainActivity).get(DateViewModel::class.java) }
+    private val entryModel by lazy { ViewModelProviders.of(this@MainActivity).get(EntryViewModel::class.java) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         type = TYPE_ALL
-        mAdapter = ShowItemAdapter(mData, type)
+        entryModel.entrys.observe(this, Observer {
+            val list = it ?: ArrayList()
+            mAdapter.changeType(type,list)
+        })
+
+        mAdapter = ShowItemAdapter(ArrayList(), type){
+            startActivity(Intent(this@MainActivity,EditActivity::class.java)
+                    .putExtra("id",it))
+        }
 
         rv_main.apply {
             adapter = mAdapter
@@ -63,7 +74,7 @@ class MainActivity : BaseActivity() {
         }
 
         iv_main_add.setOnClickListener {
-            startActivity(Intent(this@MainActivity,EditActivity::class.java))
+            startActivity(Intent(this@MainActivity, EditActivity::class.java))
         }
     }
 

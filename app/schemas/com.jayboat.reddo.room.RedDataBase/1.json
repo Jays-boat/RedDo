@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3b4ff7b22de8a2722884975a479a1f21",
+    "identityHash": "958bccc9dd32563950104bb777d772eb",
     "entities": [
       {
         "tableName": "entry",
@@ -136,7 +136,7 @@
       },
       {
         "tableName": "image",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entry_id` INTEGER NOT NULL, FOREIGN KEY(`entry_id`) REFERENCES `entry`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entry_id` INTEGER NOT NULL, `x_location` REAL NOT NULL, `y_location` REAL NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `uri` TEXT NOT NULL, FOREIGN KEY(`entry_id`) REFERENCES `entry`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -148,6 +148,36 @@
             "fieldPath": "entryId",
             "columnName": "entry_id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xLocation",
+            "columnName": "x_location",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "yLocation",
+            "columnName": "y_location",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "width",
+            "columnName": "width",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "height",
+            "columnName": "height",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uri",
+            "columnName": "uri",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -183,20 +213,8 @@
       },
       {
         "tableName": "todo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entry_id` INTEGER NOT NULL, `describe` TEXT NOT NULL, `isActivate` INTEGER NOT NULL, `isDone` INTEGER NOT NULL, FOREIGN KEY(`entry_id`) REFERENCES `entry`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`describe` TEXT NOT NULL, `isActivate` INTEGER NOT NULL, `isDone` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entry_id` INTEGER NOT NULL, FOREIGN KEY(`entry_id`) REFERENCES `entry`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "entryId",
-            "columnName": "entry_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "describe",
             "columnName": "describe",
@@ -212,6 +230,18 @@
           {
             "fieldPath": "isDone",
             "columnName": "isDone",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entryId",
+            "columnName": "entry_id",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -249,7 +279,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3b4ff7b22de8a2722884975a479a1f21\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"958bccc9dd32563950104bb777d772eb\")"
     ]
   }
 }

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    android:id="@+id/cl_main"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,17 +17,17 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
     </android.support.v7.widget.RecyclerView>
 
     <include
         android:id="@+id/top"
-        layout="@layout/include_top"/>
+        layout="@layout/include_top" />
 
     <ImageView
         android:id="@+id/iv_main_setting"
@@ -38,10 +37,9 @@
         android:background="@drawable/shape_circle"
         android:padding="6dp"
         android:src="@drawable/icon_setting"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/guideline1"
-        tools:ignore="ContentDescription"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/iv_main_add"
@@ -53,86 +51,85 @@
         android:src="@drawable/icon_add"
         app:layout_constraintBottom_toBottomOf="@id/guideline1"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription"
-        />
+        tools:ignore="ContentDescription" />
 
     <RadioGroup
         android:id="@+id/gp_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/guideline1"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline1">
 
         <RadioButton
             android:id="@+id/rb_all"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:text="@string/type_name_all"
-            android:textColor="#fff"
-            android:gravity="center"
             android:layout_gravity="bottom"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/shape_bottom_rectangle"/>
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_bottom_rectangle"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/type_name_all"
+            android:textColor="#fff" />
 
         <RadioButton
             android:id="@+id/rb_essay"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:text="@string/type_name_essay"
-            android:textColor="#fff"
-            android:gravity="center"
             android:layout_gravity="bottom"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/selector_bottom_essay"/>
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_bottom_essay"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/type_name_essay"
+            android:textColor="#fff" />
 
         <RadioButton
             android:id="@+id/rb_todo"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:text="@string/type_name_todo"
-            android:textColor="#fff"
-            android:gravity="center"
             android:layout_gravity="bottom"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/selector_bottom_todo"/>
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_bottom_todo"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/type_name_todo"
+            android:textColor="#fff" />
 
         <RadioButton
             android:id="@+id/rb_schedule"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:text="@string/type_name_schedule"
-            android:textColor="#fff"
-            android:gravity="center"
             android:layout_gravity="bottom"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/selector_bottom_schedule"/>
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_bottom_schedule"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/type_name_schedule"
+            android:textColor="#fff" />
 
         <RadioButton
             android:id="@+id/rb_daily"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:text="@string/type_name_daily"
-            android:textColor="#fff"
-            android:gravity="center"
             android:layout_gravity="bottom"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/selector_bottom_daily"/>
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_bottom_daily"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/type_name_daily"
+            android:textColor="#fff" />
 
     </RadioGroup>
 
@@ -142,5 +139,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.94" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.065" />
 
 </android.support.constraint.ConstraintLayout>

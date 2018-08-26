@@ -1,27 +1,23 @@
 package com.jayboat.reddo.ui.activity
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.haibin.calendarview.Calendar
 import com.jayboat.reddo.R
-import com.jayboat.reddo.room.bean.SimpleEntry
 import com.jayboat.reddo.ui.adapter.CalendarRecycleAdapter
 import com.jayboat.reddo.utils.dp
 import com.jayboat.reddo.utils.fakeAll
 import com.jayboat.reddo.utils.nowDate
 import com.jayboat.reddo.viewmodel.EntryViewModel
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_calendar.*
 
