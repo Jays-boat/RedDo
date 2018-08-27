@@ -27,7 +27,6 @@ import com.jayboat.reddo.room.bean.Entry
 import com.jayboat.reddo.room.bean.SimpleEntry
 import com.jayboat.reddo.ui.adapter.CalendarEntryDecoration
 import com.jayboat.reddo.ui.adapter.CalendarRecycleAdapter
-import com.jayboat.reddo.utils.TYPE_SEARCH
 import com.jayboat.reddo.utils.nowDate
 import com.jayboat.reddo.utils.spPut
 import com.jayboat.reddo.viewmodel.DateViewModel
@@ -39,7 +38,6 @@ import kotlinx.android.synthetic.main.activity_main.iv_main_calendar
 import kotlinx.android.synthetic.main.activity_main.iv_main_setting
 import kotlinx.android.synthetic.main.activity_main.iv_main_add
 import kotlinx.android.synthetic.main.activity_main.iv_main_search
-import kotlinx.android.synthetic.main.activity_main.cl_main
 import kotlinx.android.synthetic.main.dialog_text.*
 import kotlinx.android.synthetic.main.popup_search.view.*
 import org.jetbrains.anko.startActivity
@@ -72,11 +70,11 @@ class CalendarActivity : BaseActivity() {
     private val searchAdapter by lazy {
         CalendarRecycleAdapter(this, viewModel, MutableLiveData()) { id, type ->
             if (type == SimpleEntry.EntryType.DAILY) {
-                startActivity(Intent(this@CalendarActivity, PlayingVideoActivity::class.java)
-                        .putExtra("id", id))
+                startActivity<PlayingVideoActivity>("id" to id)
+            } else if (type == SimpleEntry.EntryType.TODO) {
+                startActivity<EditTodoActivity>("id" to id)
             } else {
-                startActivity(Intent(this@CalendarActivity, EditActivity::class.java)
-                        .putExtra("id", id))
+                startActivity<EditActivity>("id" to id)
             }
         }
     }
@@ -86,7 +84,7 @@ class CalendarActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
 
-        iv_main_setting.setOnClickListener{
+        iv_setting.setOnClickListener{
             if (dl_main.isDrawerOpen(nv_more)){
                 dl_main.closeDrawer(nv_more)
             } else {
@@ -200,6 +198,7 @@ class CalendarActivity : BaseActivity() {
             }
         }
 
+        viewModel.entrys.observe(this, Observer {  })
         val temp = MutableLiveData<List<Entry>>()
         searchAdapter.entryList = temp
         searchInputer.observe(this, viewModel.searchEntrys(Consumer {
@@ -221,7 +220,7 @@ class CalendarActivity : BaseActivity() {
     private fun getDateStr(year: Int, month: Int) = "${month}月 $year"
 
     private fun initPopup() {
-        val view = LayoutInflater.from(this).inflate(R.layout.popup_search, null)
+        val view = LayoutInflater.from(applicationContext).inflate(R.layout.popup_search, null)
         view.rv_search.apply {
             visibility = View.VISIBLE
             layoutManager = LinearLayoutManager(this@CalendarActivity)
@@ -233,7 +232,7 @@ class CalendarActivity : BaseActivity() {
                     isFocusable = true
                     setBackgroundDrawable(ColorDrawable())
                     animationStyle = R.style.anim_popup
-                    showAtLocation(cl_main, Gravity.TOP, 0, 0)
+                    showAtLocation(cl_calendar, Gravity.TOP, 0, 0)
                     view.btn_cancel.setOnClickListener {
                         dismiss()
                     }

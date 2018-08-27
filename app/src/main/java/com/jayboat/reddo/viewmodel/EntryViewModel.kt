@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
+import android.util.Log
 import com.haibin.calendarview.Calendar
 import com.jayboat.reddo.redDataBase
 import com.jayboat.reddo.room.bean.*
@@ -93,26 +94,6 @@ class EntryViewModel : ViewModel() {
         return t
     }
 
-    fun searchSimpleEntrys(onNext: Consumer<List<SimpleEntry>>) = Observer<String> { str ->
-        if (str.isNullOrBlank()) {
-            return@Observer
-        }
-        Observable.create<List<SimpleEntry>> { ob ->
-            str!!.toLowerCase().apply {
-                if (matches(Regex("([0-9]+y)?([0-9]+m)?([0-9]+d)?"))) {
-                    simpleEntrys.observeOn(Schedulers.io()).map { list ->
-                        val t = parseTime(this)
-                        list.filter { e ->
-                            e.time.let {
-                                (t[0] == 0 || t[0] == it.year).and(t[1] == 0 || t[1] == it.month).and(t[2] == 0 || t[2] == it.day)
-                            }
-                        }
-                    }.observeOn(AndroidSchedulers.mainThread()).subscribe { ob.onNext(it) }.dispose()
-                }
-            }
-        }
-    }
-
     /**
      * 文本输入格式：
      * ${num1}y${num2}m${num3}d ${keyword1} ${keyword2}...
@@ -127,29 +108,25 @@ class EntryViewModel : ViewModel() {
                     val t = parseTime(this)
                     entryDao.selectEntryOnceMatchDate(t[0], t[1], t[2])
                 } else {
-                    null
+                    listOf()
                 }
-            } ?: entryDao.selectEntryOnceMatchKey(this)
-
-            fun List<Entry>.sortByTime() =
-                    asSequence()
-                            .sortedBy { it.simpleEntry.time.day }
-                            .sortedBy { it.simpleEntry.time.month }
-                            .sortedBy { it.simpleEntry.time.year }
-                            .toList()
+            }
 
             val keyList = str!!.split(" ")
-            ob.onNext(
-                    if (keyList.size == 1) {
-                        keyList[0].parseDateAble()
-                    } else {
-                        val entryCollector = keyList[0].parseDateAble().toMutableList()
-                        for (i in 1 until keyList.size) {
-                            entryCollector.addAll(entryDao.selectEntryOnceMatchKey(keyList[i]))
-                        }
-                        entryCollector
-                    }.sortByTime()
-            )
+            ob.onNext(entrys.value?.asSequence()?.filter { e ->
+                keyList.any {
+                    Log.d("why","${e.simpleEntry.title} ${it} ${e.simpleEntry.detail}")
+                    Log.d("why", (e.simpleEntry.title.contains(it, true)
+                            || e.simpleEntry.detail?.contains(it, true) ?: false).toString())
+                    e.simpleEntry.title.contains(it, true)
+                            || e.simpleEntry.detail?.contains(it, true) ?: false
+                }
+            }?.plus(keyList[0].parseDateAble())
+                    ?.sortedBy { it.simpleEntry.time.day }
+                    ?.sortedBy { it.simpleEntry.time.month }
+                    ?.sortedBy { it.simpleEntry.time.year }
+                    ?.toList()
+                    ?: listOf())
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(onNext)
     }
 
