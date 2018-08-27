@@ -2,6 +2,7 @@ package com.jayboat.reddo.ui.widget
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.support.v4.content.ContextCompat
@@ -70,18 +71,21 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
                         cHeight = it.height
                         xLocation = it.xLocation
                         yLocation = it.yLocation
-                        val option = RequestOptions.placeholderOf(ContextCompat.getDrawable(context, R.drawable.icon_place)).override(cWidth, cHeight).centerCrop()
-                        Glide.with(context)
-                                .asBitmap()
-                                .load(it.uri)
-                                .apply(option)
-                                .into(object : SimpleTarget<Bitmap>() {
-                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                        picturePro = resource.width / resource.height.toFloat()
-                                        setImageBitmap(resource)
-                                    }
-                                })
                         mUri = it.uri
+                        val op = BitmapFactory.Options().apply {
+                            inJustDecodeBounds = true
+                        }
+                        BitmapFactory.decodeFile(mUri,op)
+                        picturePro = op.outWidth / op.outHeight.toFloat()
+                        if (op.outWidth > screenWidth / 3){
+                            op.inSampleSize = screenWidth / 3 / op.outWidth
+                        }
+                        if (op.outWidth > screenHeight / 4){
+                            op.inSampleSize = screenHeight / 4 / op.outHeight
+                        }
+                        op.inJustDecodeBounds = false
+                        val btm = BitmapFactory.decodeFile(mUri,op)
+                        setImageBitmap(Bitmap.createBitmap(btm))
                         isClickable = true
                     }.also {
                         mPictures.add(it)
@@ -95,27 +99,22 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
     fun addPicture(urls: List<Uri>) {
         urls.forEach {
             addView(TouchImageView(context, null).apply {
-                val option = RequestOptions.placeholderOf(ContextCompat.getDrawable(context, R.drawable.icon_place)).centerCrop()
-                Glide.with(context)
-                        .asBitmap()
-                        .load(it)
-                        .apply(option)
-                        .into(object : SimpleTarget<Bitmap>() {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                picturePro = resource.width / resource.height.toFloat()
-                                if (resource.width > screenWidth / 3){
-                                    resource.width = screenWidth / 3
-                                    resource.height = (screenWidth / 3 / picturePro).toInt()
-                                }
-                                if (resource.height > screenHeight / 4){
-                                    resource.height = screenHeight / 4
-                                    resource.width = (screenHeight / 4 * picturePro).toInt()
-                                }
-                                setImageBitmap(resource)
-                            }
-                        })
                 mUri = getImageAbsolutePath(context, it).toString()
                 isClickable = true
+                val op = BitmapFactory.Options().apply {
+                    inJustDecodeBounds = true
+                }
+                BitmapFactory.decodeFile(mUri,op)
+                picturePro = op.outWidth / op.outHeight.toFloat()
+                if (op.outWidth > screenWidth / 3){
+                    op.inSampleSize = screenWidth / 3 / op.outWidth
+                }
+                if (op.outWidth > screenHeight / 4){
+                    op.inSampleSize = screenHeight / 4 / op.outHeight
+                }
+                op.inJustDecodeBounds = false
+                val btm = BitmapFactory.decodeFile(mUri,op)
+                setImageBitmap(Bitmap.createBitmap(btm))
             }.also {
                 mPictures.add(it)
             })
