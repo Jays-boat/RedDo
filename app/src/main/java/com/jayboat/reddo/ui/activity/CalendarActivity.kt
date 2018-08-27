@@ -121,9 +121,12 @@ class CalendarActivity : BaseActivity() {
                         setCancelable(true)
                         setTitle("选择夜间模式方案")
                         setMessage("注：自动模式会根据系统时间调整哦")
-                        setNeutralButton("常关") { _, _ -> spPut("NIGHT_MODE", AppCompatDelegate.MODE_NIGHT_NO) }
-                        setNegativeButton("自动") { _, _ -> spPut("NIGHT_MODE", AppCompatDelegate.MODE_NIGHT_AUTO) }
-                        setPositiveButton("常开") { _, _ -> spPut("NIGHT_MODE", AppCompatDelegate.MODE_NIGHT_YES) }
+                        setNeutralButton("常关") { _, _ -> spPut("NIGHT_MODE", AppCompatDelegate.MODE_NIGHT_NO)
+                            recreate()}
+                        setNegativeButton("自动") { _, _ -> spPut("NIGHT_MODE", AppCompatDelegate.MODE_NIGHT_AUTO)
+                            recreate()}
+                        setPositiveButton("常开") { _, _ -> spPut("NIGHT_MODE", AppCompatDelegate.MODE_NIGHT_YES)
+                            recreate()}
                     }.show()
                 }
             }
