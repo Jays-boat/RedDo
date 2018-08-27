@@ -75,11 +75,11 @@ class DailyCameraActivity : BaseActivity() {
                     AlertDialog.Builder(this@DailyCameraActivity).apply {
                         setTitle("成功记录下来了呢~")
                         val et = editText {
-                            hint = "给这段回忆起个名吧~"
+                            hint = "给这段日常起个名吧~"
                         }
                         removeView(et)
                         setView(et)
-                        setPositiveButton("保存进回忆") { _, _ ->
+                        setPositiveButton("存进柜子里") { _, _ ->
                             ViewModelProviders.of(this@DailyCameraActivity)
                                     .get(EntryViewModel::class.java)
                                     .insertSimpleEntry(

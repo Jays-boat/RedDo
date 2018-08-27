@@ -7,24 +7,22 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
+import android.view.View
 import android.widget.EditText
 import android.widget.RelativeLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.jayboat.reddo.appContext
 import com.jayboat.reddo.room.bean.Entry
 import com.jayboat.reddo.room.bean.Image
 import com.jayboat.reddo.room.bean.SimpleEntry
-import com.jayboat.reddo.room.bean.Todo
 import com.jayboat.reddo.utils.dp
 import com.jayboat.reddo.utils.getImageAbsolutePath
 import com.jayboat.reddo.utils.screenHeight
 import com.jayboat.reddo.utils.screenWidth
 import com.jayboat.reddo.viewmodel.EntryViewModel
-import com.jayboat.reddo.room.bean.SimpleEntry.EntryType.*
-import com.jayboat.reddo.utils.*
+import kotlinx.android.synthetic.main.activity_edit.view.*
 
 
 /*
@@ -104,7 +102,7 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
                                 setImageBitmap(resource)
                             }
                         })
-                mUri = getImageAbsolutePath(appContext, it).toString()
+                mUri = getImageAbsolutePath(context, it).toString()
                 isClickable = true
             }.also {
                 mPictures.add(it)
@@ -123,7 +121,7 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
                 }.map {
                     Image().apply {
                         this.xLocation = it.xLocation
-                        this.yLocation = it.xLocation
+                        this.yLocation = it.yLocation
                         this.width = it.cWidth
                         this.height = it.cHeight
                         this.uri = it.mUri
@@ -156,9 +154,15 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
         this.type = type
         data.simpleEntry.type = type
         mEditText.setText("")
-        removeAllViews()
+        mPictures.forEach {
+            removeView(it)
+        }
         mPictures.clear()
-        addView(mEditText)
+        if (type == SimpleEntry.EntryType.TODO){
+            iv_edit_album.visibility = View.GONE
+        } else {
+            iv_edit_album.visibility = View.VISIBLE
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

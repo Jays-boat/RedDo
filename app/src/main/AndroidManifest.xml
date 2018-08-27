@@ -42,7 +42,8 @@
         </provider>
 
         <activity android:name=".ui.activity.DailyCameraActivity" />
-        <activity android:name=".ui.activity.EditTodoActivity"></activity>
+        <activity android:name=".ui.activity.PlayingVideoActivity"/>
+        <activity android:name=".ui.activity.EditTodoActivity"/>
     </application>
 
 </manifest>

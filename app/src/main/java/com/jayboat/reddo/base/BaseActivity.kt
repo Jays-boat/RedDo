@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
+import com.jayboat.reddo.utils.spGet
 
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
+        AppCompatDelegate.setDefaultNightMode(spGet("NIGHT_MODE", AppCompatDelegate.MODE_NIGHT_AUTO))
         super.onCreate(savedInstanceState)
     }
 

@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.jayboat.reddo.R
-import com.jayboat.reddo.appContext
 import com.jayboat.reddo.room.bean.Entry
 import com.jayboat.reddo.room.bean.SimpleEntry
 import com.jayboat.reddo.ui.widget.TodoItemView
@@ -27,28 +26,34 @@ class RightItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun initData(data: Entry, isEdit: Boolean, vm: EntryViewModel) {
+        val simpleEntry = data.simpleEntry
+        val todoList = data.todoList
+        val imgList = data.imgList
         itemView.apply {
             ll_todo_list.visibility = View.GONE
             iv_left_image.visibility = View.VISIBLE
             tv_left_title.visibility = View.VISIBLE
-            if (data.simpleEntry.type == SimpleEntry.EntryType.TODO) {
+            if (simpleEntry.type == SimpleEntry.EntryType.TODO) {
                 iv_left_image.visibility = View.GONE
                 tv_left_title.visibility = View.GONE
                 ll_todo_list.visibility = View.VISIBLE
-                repeat(if (data.todoList.size < 4) data.todoList.size else 3) {
-                    ll_todo_list.addView(TodoItemView(appContext).apply {
-                        refreshView(data.todoList[it], vm)
+                repeat(if (todoList.size < 4) todoList.size else 3) {
+                    ll_todo_list.addView(TodoItemView(itemView.context).apply {
+                        refreshView(todoList[it], vm)
                     })
                 }
             }
-            if (data.imgList.isEmpty()) {
-                iv_left_image.visibility = View.GONE
-            } else {
-                Glide.with(itemView).load(data.imgList[0].uri).into(iv_left_image)
+            when {
+                simpleEntry.type == SimpleEntry.EntryType.DAILY -> {
+                    val bitmap = simpleEntry.detail?.split("|")?.get(0)
+                    Glide.with(itemView).load(bitmap).into(iv_left_image)
+                }
+                imgList.isEmpty() -> iv_left_image.visibility = View.GONE
+                else -> Glide.with(itemView).load(imgList[0].uri).into(iv_left_image)
             }
-            tv_right_time.text = getDataString(data.simpleEntry.time)
-            tv_left_title.text = data.simpleEntry.title
-            iv_center_image.setImageDrawable(ContextCompat.getDrawable(appContext, shape[data.simpleEntry.type]!!))
+            tv_right_time.text = getDataString(simpleEntry.time)
+            tv_left_title.text = simpleEntry.title
+            iv_center_image.setImageDrawable(ContextCompat.getDrawable(itemView.context, shape[simpleEntry.type]!!))
             iv_delete.visibility = if (isEdit) {
                 View.VISIBLE
             } else {
