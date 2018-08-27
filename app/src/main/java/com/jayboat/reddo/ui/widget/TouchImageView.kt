@@ -3,6 +3,7 @@ package com.jayboat.reddo.ui.widget
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.net.Uri
@@ -21,7 +22,7 @@ import kotlinx.android.synthetic.main.dialog_delete.*
 class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(context, attrs) {
     private var dx = 0.0f
     private var dy = 0.0f
-    private var originDistance = 0f
+    private var originDistance = 1f
     private val defaultMode = 0
     private val moveMode = 1
     private val scaleMode = 2
@@ -93,6 +94,9 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
 //                    layout((left + offsetX).toInt(), (top + offsetY).toInt(), (right + offsetX).toInt(), (bottom + offsetY).toInt())
 
                 } else {
+                    if (mRunnable != null) {
+                        removeCallbacks(mRunnable)
+                    }
                     currentMode = scaleMode
                     val currentDistance = distance(event)
                     if (originDistance == 1f) {
