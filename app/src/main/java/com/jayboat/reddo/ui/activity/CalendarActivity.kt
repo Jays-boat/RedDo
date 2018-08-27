@@ -21,6 +21,7 @@ import android.widget.PopupWindow
 import com.jayboat.reddo.R
 import com.jayboat.reddo.base.BaseActivity
 import com.jayboat.reddo.room.bean.Entry
+import com.jayboat.reddo.room.bean.SimpleEntry
 import com.jayboat.reddo.ui.adapter.CalendarEntryDecoration
 import com.jayboat.reddo.ui.adapter.CalendarRecycleAdapter
 import com.jayboat.reddo.utils.nowDate
@@ -57,10 +58,17 @@ class CalendarActivity : BaseActivity() {
     private val searchInputer by lazy { MutableLiveData<String>() }
     private var searchPopup: PopupWindow? = null
 
-    private val searchAdapter by lazy { CalendarRecycleAdapter(this, viewModel, MutableLiveData()){
-        startActivity(Intent(this@CalendarActivity,EditActivity::class.java)
-                .putExtra("id",it))
-    } }
+    private val searchAdapter by lazy {
+        CalendarRecycleAdapter(this, viewModel, MutableLiveData()) { id, type ->
+            if (type == SimpleEntry.EntryType.DAILY) {
+                startActivity(Intent(this@CalendarActivity, PlayingVideoActivity::class.java)
+                        .putExtra("id", id))
+            } else {
+                startActivity(Intent(this@CalendarActivity, EditActivity::class.java)
+                        .putExtra("id", id))
+            }
+        }
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,9 +107,14 @@ class CalendarActivity : BaseActivity() {
         rv_calendar.apply {
             layoutManager = LinearLayoutManager(this@CalendarActivity)
             adapter = CalendarRecycleAdapter(this@CalendarActivity, viewModel,
-                    viewModel.getEntrysByDate(nowDate)){
-                startActivity(Intent(this@CalendarActivity,EditActivity::class.java)
-                        .putExtra("id",it))
+                    viewModel.getEntrysByDate(nowDate)) { id, type ->
+                if (type == SimpleEntry.EntryType.DAILY) {
+                    startActivity(Intent(this@CalendarActivity, PlayingVideoActivity::class.java)
+                            .putExtra("id", id))
+                } else {
+                    startActivity(Intent(this@CalendarActivity, EditActivity::class.java)
+                            .putExtra("id", id))
+                }
             }
             addItemDecoration(CalendarEntryDecoration())
         }

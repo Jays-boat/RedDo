@@ -1,6 +1,7 @@
 package com.jayboat.reddo.ui.activity
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -19,19 +20,21 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.jayboat.reddo.R
 import com.jayboat.reddo.base.BaseActivity
 import com.jayboat.reddo.room.bean.Entry
+import com.jayboat.reddo.room.bean.SimpleEntry
 import com.jayboat.reddo.ui.adapter.ShowItemAdapter
 import com.jayboat.reddo.utils.*
 import com.jayboat.reddo.viewmodel.DateViewModel
 import com.jayboat.reddo.viewmodel.EntryViewModel
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_text.*
 import kotlinx.android.synthetic.main.popup_search.view.*
 
 
 class MainActivity : BaseActivity() {
 
     lateinit var type: String
-    lateinit var mAdapter: ShowItemAdapter
+    private lateinit var mAdapter: ShowItemAdapter
     private val dateModel by lazy { ViewModelProviders.of(this@MainActivity).get(DateViewModel::class.java) }
     private val entryModel by lazy { ViewModelProviders.of(this@MainActivity).get(EntryViewModel::class.java) }
     private var isEdit = false
@@ -45,12 +48,17 @@ class MainActivity : BaseActivity() {
 
         observeModel()
 
-        mAdapter = ShowItemAdapter(ArrayList(), type, entryModel, {
+        mAdapter = ShowItemAdapter(ArrayList(), type, entryModel, { id,type ->
             if (!isEdit) {
-                startActivity(Intent(this@MainActivity, EditActivity::class.java)
-                        .putExtra("id", it))
+                if (type == SimpleEntry.EntryType.DAILY){
+                    startActivity(Intent(this@MainActivity, PlayingVideoActivity::class.java)
+                            .putExtra("id", id))
+                } else {
+                    startActivity(Intent(this@MainActivity, EditActivity::class.java)
+                            .putExtra("id", id))
+                }
             } else {
-                entryModel.getEntryById(it).observe(this, Observer {
+                entryModel.getEntryById(id).observe(this, Observer {
                     if (it == null) {
                         return@Observer
                     }
@@ -106,6 +114,46 @@ class MainActivity : BaseActivity() {
             mAdapter.changeEdit(isEdit)
         }
 
+        iv_main_setting.setOnClickListener{
+            if (dl_main.isDrawerOpen(nv_more)){
+                dl_main.closeDrawer(nv_more)
+            } else {
+                dl_main.openDrawer(nv_more)
+            }
+        }
+
+        nv_more.setNavigationItemSelectedListener {
+            when(it.title){
+                resources.getString(R.string.about) -> {
+                    Dialog(this@MainActivity).apply {
+                        setCancelable(true)
+                        setContentView(R.layout.dialog_text)
+                        ib_dialog_back.setOnClickListener{
+                            dismiss()
+                        }
+                        tv_title.text = it.title.toString()
+                        tv_content.text = resources.getText(R.string.about_content)
+                    }.show()
+                }
+                resources.getString(R.string.help) -> {
+                    Dialog(this@MainActivity).apply {
+                        setCancelable(true)
+                        setContentView(R.layout.dialog_text)
+                        ib_dialog_back.setOnClickListener{
+                            dismiss()
+                        }
+                        tv_title.text = it.title.toString()
+                        tv_content.text = resources.getText(R.string.help_content)
+                    }.show()
+                }
+                resources.getString(R.string.night_time_setting) ->{
+                    // todo 夜间模式设置
+                }
+            }
+
+            true
+        }
+
         searchInputer.observe(this, entryModel.searchEntrys(Consumer {
                 mAdapter.changeType(TYPE_SEARCH,it)
         }))
@@ -144,6 +192,7 @@ class MainActivity : BaseActivity() {
         })
                 .setType(booleanArrayOf(true, true, true, true, true, false))
                 .setDate(redDateToDate(data.simpleEntry.time))
+                .setTitleText("它真正存在的时间(；′⌒`)")
                 .build()
                 .show()
     }

@@ -46,6 +46,10 @@ class EditActivity : BaseActivity() {
             TYPE_DAILY -> SimpleEntry.EntryType.DAILY
             TYPE_AGENDA -> SimpleEntry.EntryType.AGENDA
             else -> SimpleEntry.EntryType.TODO
+        }.also {
+            if (it == SimpleEntry.EntryType.TODO){
+                iv_edit_album.visibility = View.GONE
+            }
         }
 
         val id = intent.getIntExtra("id", -1)
@@ -113,10 +117,11 @@ class EditActivity : BaseActivity() {
 
 
     override fun onDestroy() {
-        if (intent.getIntExtra("id", -1) == -1 && el_edit.saveData().simpleEntry.detail != "") {
-            entryViewModel.insertEntry(el_edit.saveData())
+        val data = el_edit.saveData()
+        if (intent.getIntExtra("id", -1) == -1 && data.simpleEntry.detail != "") {
+            entryViewModel.insertEntry(data)
         } else {
-            entryViewModel.updateEntry(el_edit.saveData())
+            entryViewModel.updateEntry(data)
         }
         super.onDestroy()
     }
@@ -158,7 +163,11 @@ class EditActivity : BaseActivity() {
     private fun editTime(data: Entry) {
         TimePickerBuilder(this@EditActivity, OnTimeSelectListener { date, _ ->
             data.simpleEntry.time = dateToRedDate(date)
-            entryViewModel.insertEntry(data)
+            if (data.simpleEntry.id != 0){
+                entryViewModel.updateEntry(data)
+            } else {
+                entryViewModel.insertEntry(data)
+            }
             finish()
         })
                 .setType(booleanArrayOf(true, true, true, true, true, false))

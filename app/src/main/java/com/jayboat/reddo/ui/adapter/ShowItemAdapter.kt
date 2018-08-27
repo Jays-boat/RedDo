@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jayboat.reddo.R
 import com.jayboat.reddo.room.bean.Entry
+import com.jayboat.reddo.room.bean.SimpleEntry
 import com.jayboat.reddo.ui.viewholder.FooterItemViewHolder
 import com.jayboat.reddo.ui.viewholder.LeftItemViewHolder
 import com.jayboat.reddo.ui.viewholder.NoneItemViewHolder
@@ -15,7 +16,7 @@ import com.jayboat.reddo.viewmodel.EntryViewModel
 /*
  by Cynthia at 2018/8/21
  */
- class ShowItemAdapter(private var mData : List<Entry>, private var type : String,private val vm:EntryViewModel,private var mClickListener:(id:Int)->Unit,private var mLongClickListener:(data:Entry)->Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+ class ShowItemAdapter(private var mData : List<Entry>, private var type : String,private val vm:EntryViewModel,private var mClickListener:(id:Int,type:SimpleEntry.EntryType)->Unit,private var mLongClickListener:(data:Entry)->Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val leftType = 1
     private val rightType = 2
@@ -56,7 +57,7 @@ import com.jayboat.reddo.viewmodel.EntryViewModel
                     itemView.apply {
                         layoutParams.height = screenHeight / 8
                         setOnClickListener {
-                            mClickListener(mData[position].simpleEntry.id)
+                            mClickListener(mData[position].simpleEntry.id,mData[position].simpleEntry.type)
                         }
                         setOnLongClickListener {
                             mLongClickListener(mData[position])
@@ -71,7 +72,7 @@ import com.jayboat.reddo.viewmodel.EntryViewModel
                     itemView.apply {
                         layoutParams.height = screenHeight / 8
                         setOnClickListener {
-                            mClickListener(mData[position].simpleEntry.id)
+                            mClickListener(mData[position].simpleEntry.id,mData[position].simpleEntry.type)
                         }
                         setOnLongClickListener {
                             mLongClickListener(mData[position])

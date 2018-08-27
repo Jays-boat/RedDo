@@ -24,4 +24,26 @@
     <string name="type_name_all">全部</string>
     <string name="search_hint">试试"2018y8m27d":)</string>
     <string name="cancel">取消</string>
+    <string name="edit_title">给这段日常改个新的描述吧ヾ(๑╹◡╹)ﾉ</string>
+    <string name="welcome">欢迎你的使用，如果有问题可以随时提出(*￣︶￣)</string>
+    <string name="night_time_setting">夜间模式设置</string>
+    <string name="help">使用说明</string>
+    <string name="about">关于</string>
+
+    <string name="about_content">关于我们：\n
+        这是红岩网校移动开发部某两个学员的考核作品\n
+        作品原型是来自于原iOS上比较好用的一款记事本app:Pendo\n
+        只是因为其中某个人突然想起来了然后就做了这个感觉异常清流的东西:)\n
+        因为时间仓促可能很多功能并不能非常完善\n
+        甚至潜藏bug…\n
+        如果有意见或建议可以假装联系一下我们
+    </string>
+    <string name="help_content">关于该应用的正确打开方式：\n
+    1.类型分为随笔(日记)\待办\日程\日常(录点小视频)\n
+    2.在首页可以通过下方按钮来进行具体内容的筛选，也可以分别通过左上角的搜索和右上角的日历图标进入搜索和日历形式查看的模式\n
+    3.搜索可以多类型匹配，具体可以自己探索一下哦\n
+        (不过可以提示的是空格键是关键词分割符号哦)\n
+    4.右下方的添加按钮是按照你当前选择的页面进行条目新建的啦，默认是待办类型\n
+    5.待办内容可以通过点击/滑动进行待办的确定/取消/删除\n
+    6.有些部分长按有惊喜？</string>
 </resources>

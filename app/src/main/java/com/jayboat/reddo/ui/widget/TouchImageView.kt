@@ -118,11 +118,6 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
                         currentMode = defaultMode
                         return true
                     }
-                    defaultMode -> {
-                        //todo 展示大图
-                        Log.i(tag, "you touch this image!")
-                        return true
-                    }
                     scaleMode -> {
                         Log.i(tag, "scaling...")
                         currentMode = defaultMode
