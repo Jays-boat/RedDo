@@ -2,14 +2,17 @@ package com.jayboat.reddo.ui.viewholder
 
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.jayboat.reddo.R
 import com.jayboat.reddo.room.bean.Entry
 import com.jayboat.reddo.room.bean.SimpleEntry
 import com.jayboat.reddo.ui.widget.TodoItemView
+import com.jayboat.reddo.utils.dp
 import com.jayboat.reddo.utils.getDataString
 import com.jayboat.reddo.viewmodel.EntryViewModel
+import kotlinx.android.synthetic.main.item_check_text.view.*
 import kotlinx.android.synthetic.main.recycle_item_center_right.view.*
 
 /*
@@ -25,6 +28,7 @@ class RightItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         )
     }
 
+
     fun initData(data: Entry, isEdit: Boolean, vm: EntryViewModel) {
         val simpleEntry = data.simpleEntry
         val todoList = data.todoList
@@ -37,11 +41,17 @@ class RightItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 iv_left_image.visibility = View.GONE
                 tv_left_title.visibility = View.GONE
                 ll_todo_list.visibility = View.VISIBLE
-                repeat(if (todoList.size < 4) todoList.size else 3) {
-                    ll_todo_list.addView(TodoItemView(itemView.context).apply {
-                        refreshView(todoList[it], vm)
-                    })
-                }
+                ll_todo_list.removeAllViews()
+
+                    val time = if (todoList.size < 3) todoList.size else 3
+                    repeat(time) {
+                        ll_todo_list.addView(TodoItemView(itemView.context).apply {
+                            refreshView(todoList[it], vm)
+                            tv_todo.setPadding(dp(2f).toInt(), dp(2f).toInt(), dp(2f).toInt(), dp(2f).toInt())
+                        })
+                    }
+
+
             }
             when {
                 simpleEntry.type == SimpleEntry.EntryType.DAILY -> {

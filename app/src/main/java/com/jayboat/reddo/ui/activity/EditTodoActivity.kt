@@ -17,6 +17,9 @@ import com.jayboat.reddo.R
 import com.jayboat.reddo.room.bean.Entry
 import com.jayboat.reddo.room.bean.Todo
 import com.jayboat.reddo.ui.viewholder.CalendarEntryHolder
+import com.jayboat.reddo.utils.TYPE_AGENDA
+import com.jayboat.reddo.utils.TYPE_ESSAY
+import com.jayboat.reddo.utils.show
 import com.jayboat.reddo.viewmodel.EntryViewModel
 import kotlinx.android.synthetic.main.activity_edit_todo.*
 import kotlinx.android.synthetic.main.popup_more.view.*
@@ -95,14 +98,16 @@ class EditTodoActivity : AppCompatActivity() {
                     animationStyle = R.style.anim_bottom
                     showAtLocation(iv_edit_more, Gravity.BOTTOM, 0, 0)
                     view.apply {
-                        //todo 转换
                         tv_choose_todo.setOnClickListener {
+                            show("现在就是待办编辑页哦(〃'▽'〃)")
                             dismiss()
                         }
                         tv_choose_agenda.setOnClickListener {
+                            startActivity(Intent(this@EditTodoActivity,EditActivity::class.java).putExtra("type", TYPE_AGENDA))
                             dismiss()
                         }
                         tv_choose_essay.setOnClickListener {
+                            startActivity(Intent(this@EditTodoActivity,EditActivity::class.java).putExtra("type", TYPE_ESSAY))
                             dismiss()
                         }
                         tv_choose_daily.setOnClickListener {

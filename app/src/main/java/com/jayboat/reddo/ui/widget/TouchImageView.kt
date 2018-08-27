@@ -1,5 +1,6 @@
 package com.jayboat.reddo.ui.widget
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Canvas
@@ -65,10 +66,8 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (mRunnable != null) {
-            removeCallbacks(mRunnable)
-        }
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 dx = event.x
@@ -78,25 +77,25 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
             }
             MotionEvent.ACTION_MOVE -> {
                 if (event.pointerCount < 2) {
-                    currentMode = moveMode
-                    var offsetX = event.x - dx
-                    var offsetY = event.y - dy
-                    if (left < 0 || right + offsetX > screenWidth) {
-                        offsetX = 0f
+                    val offsetX = event.x - dx
+                    val offsetY = event.y - dy
+                    if (Math.abs(offsetX) > 10 || Math.abs(offsetY) > 10){
+                        if (mRunnable != null) {
+                            removeCallbacks(mRunnable)
+                        }
+                        currentMode = moveMode
+                        left += offsetX.toInt()
+                        top += offsetY.toInt()
+                        xLocation = x
+                        yLocation = y
+                        requestLayout()
                     }
-                    if (top < 0 || bottom + offsetY > screenHeight) {
-                        offsetY = 0f
-                    }
-                    left += offsetX.toInt()
-                    top += offsetY.toInt()
-                    xLocation = x
-                    yLocation = y
 //                    layout((left + offsetX).toInt(), (top + offsetY).toInt(), (right + offsetX).toInt(), (bottom + offsetY).toInt())
-                    requestLayout()
+
                 } else {
                     currentMode = scaleMode
                     val currentDistance = distance(event)
-                    if (originDistance == 0f) {
+                    if (originDistance == 1f) {
                         originDistance = currentDistance
                     } else {
                         if (currentDistance > 10f) {
@@ -112,6 +111,9 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
                 }
             }
             MotionEvent.ACTION_UP -> {
+                if (mRunnable != null) {
+                    removeCallbacks(mRunnable)
+                }
                 when (currentMode) {
                     moveMode -> {
                         Log.i(tag, "moving...")
@@ -121,7 +123,7 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
                     scaleMode -> {
                         Log.i(tag, "scaling...")
                         currentMode = defaultMode
-                        originDistance = 0f
+                        originDistance = 1f
                         return true
                     }
                     else -> {

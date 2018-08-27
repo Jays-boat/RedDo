@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.net.Uri
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.jayboat.reddo.R
 import com.jayboat.reddo.room.bean.Entry
 import com.jayboat.reddo.room.bean.Image
 import com.jayboat.reddo.room.bean.SimpleEntry
@@ -68,7 +70,7 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
                         cHeight = it.height
                         xLocation = it.xLocation
                         yLocation = it.yLocation
-                        val option = RequestOptions.overrideOf(cWidth, cHeight)
+                        val option = RequestOptions.placeholderOf(ContextCompat.getDrawable(context, R.drawable.icon_place)).override(cWidth, cHeight).centerCrop()
                         Glide.with(context)
                                 .asBitmap()
                                 .load(it.uri)
@@ -93,12 +95,22 @@ class EditLayout(context: Context, attrs: AttributeSet) : RelativeLayout(context
     fun addPicture(urls: List<Uri>) {
         urls.forEach {
             addView(TouchImageView(context, null).apply {
+                val option = RequestOptions.placeholderOf(ContextCompat.getDrawable(context, R.drawable.icon_place)).centerCrop()
                 Glide.with(context)
                         .asBitmap()
                         .load(it)
+                        .apply(option)
                         .into(object : SimpleTarget<Bitmap>() {
                             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                                 picturePro = resource.width / resource.height.toFloat()
+                                if (resource.width > screenWidth / 3){
+                                    resource.width = screenWidth / 3
+                                    resource.height = (screenWidth / 3 / picturePro).toInt()
+                                }
+                                if (resource.height > screenHeight / 4){
+                                    resource.height = screenHeight / 4
+                                    resource.width = (screenHeight / 4 * picturePro).toInt()
+                                }
                                 setImageBitmap(resource)
                             }
                         })

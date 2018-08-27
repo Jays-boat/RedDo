@@ -43,10 +43,9 @@ class EditActivity : BaseActivity() {
         setContentView(R.layout.activity_edit)
 
         el_edit.type = when (intent.getStringExtra("type")) {
-            TYPE_ESSAY -> SimpleEntry.EntryType.ESSAY
             TYPE_DAILY -> SimpleEntry.EntryType.DAILY
             TYPE_AGENDA -> SimpleEntry.EntryType.AGENDA
-            else -> SimpleEntry.EntryType.TODO
+            else -> SimpleEntry.EntryType.ESSAY
         }.also {
             if (it == SimpleEntry.EntryType.TODO){
                 iv_edit_album.visibility = View.GONE
@@ -139,7 +138,8 @@ class EditActivity : BaseActivity() {
                     showAtLocation(iv_edit_more, Gravity.BOTTOM, 0, 0)
                     view.apply {
                         tv_choose_todo.setOnClickListener {
-                            iv_edit_album.visibility = View.GONE
+                            dismiss()
+                            startActivity(Intent(this@EditActivity,EditTodoActivity::class.java))
                             el_edit.changeType(SimpleEntry.EntryType.TODO)
                             dismiss()
                         }

@@ -53,13 +53,11 @@ class MainActivity : BaseActivity() {
 
         mAdapter = ShowItemAdapter(ArrayList(), type, entryModel, { id,type ->
             if (!isEdit) {
-                if (type == SimpleEntry.EntryType.DAILY){
-                    startActivity(Intent(this@MainActivity, PlayingVideoActivity::class.java)
+                when (type) {
+                    SimpleEntry.EntryType.DAILY -> startActivity(Intent(this@MainActivity, PlayingVideoActivity::class.java)
                             .putExtra("id", id))
-                } else if (type == SimpleEntry.EntryType.TODO) {
-                    startActivity<EditTodoActivity>("id" to id)
-                } else {
-                    startActivity(Intent(this@MainActivity, EditActivity::class.java)
+                    SimpleEntry.EntryType.TODO -> startActivity<EditTodoActivity>("id" to id)
+                    else -> startActivity(Intent(this@MainActivity, EditActivity::class.java)
                             .putExtra("id", id))
                 }
             } else {
@@ -106,12 +104,10 @@ class MainActivity : BaseActivity() {
         }
 
         iv_main_add.setOnClickListener {
-            if (type == TYPE_DAILY) {
-                startActivity(Intent(this@MainActivity, DailyCameraActivity::class.java))
-            } else if (type == TYPE_TODO) {
-                startActivity<EditTodoActivity>()
-            } else {
-                startActivity(Intent(this@MainActivity, EditActivity::class.java)
+            when (type) {
+                TYPE_DAILY -> startActivity(Intent(this@MainActivity, DailyCameraActivity::class.java))
+                TYPE_TODO -> startActivity<EditTodoActivity>()
+                else -> startActivity(Intent(this@MainActivity, EditActivity::class.java)
                         .putExtra("type", type))
             }
         }
@@ -187,7 +183,7 @@ class MainActivity : BaseActivity() {
                     showAtLocation(cl_main, Gravity.TOP, 0, 0)
                     view.btn_cancel.setOnClickListener {
                         dismiss()
-                        mAdapter.changeType(type)
+                        type = TYPE_ALL
                     }
                     view.et_search.addTextChangedListener(object : TextWatcher {
                         override fun afterTextChanged(s: Editable?) {}

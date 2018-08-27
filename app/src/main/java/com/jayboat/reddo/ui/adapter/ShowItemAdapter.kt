@@ -1,6 +1,7 @@
 package com.jayboat.reddo.ui.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jayboat.reddo.R
@@ -55,7 +56,7 @@ import com.jayboat.reddo.viewmodel.EntryViewModel
                 holder.apply {
                     initData(mData[position],isEdit,vm)
                     itemView.apply {
-                        layoutParams.height = screenHeight / 8
+                        layoutParams.height = screenHeight / 6
                         setOnClickListener {
                             mClickListener(mData[position].simpleEntry.id,mData[position].simpleEntry.type)
                         }
@@ -70,7 +71,7 @@ import com.jayboat.reddo.viewmodel.EntryViewModel
                 holder.apply {
                     initData(mData[position],isEdit,vm)
                     itemView.apply {
-                        layoutParams.height = screenHeight / 8
+                        layoutParams.height = screenHeight / 6
                         setOnClickListener {
                             mClickListener(mData[position].simpleEntry.id,mData[position].simpleEntry.type)
                         }
@@ -82,7 +83,7 @@ import com.jayboat.reddo.viewmodel.EntryViewModel
                 }
             }
             else -> {
-                (holder as FooterItemViewHolder).itemView.layoutParams.height = screenHeight / 10
+                (holder as FooterItemViewHolder).itemView.layoutParams.height = screenHeight / 8
             }
         }
     }
