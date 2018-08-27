@@ -29,7 +29,7 @@
         <activity android:name=".ui.activity.CalendarActivity" />
         <activity
             android:name=".ui.activity.EditActivity"
-            android:windowSoftInputMode="adjustPan|stateVisible" />
+            android:windowSoftInputMode="adjustResize|stateVisible" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -38,10 +38,10 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path"></meta-data>
+                android:resource="@xml/file_path" />
         </provider>
 
-        <activity android:name=".ui.activity.DailyCameraActivity"></activity>
+        <activity android:name=".ui.activity.DailyCameraActivity" />
     </application>
 
 </manifest>

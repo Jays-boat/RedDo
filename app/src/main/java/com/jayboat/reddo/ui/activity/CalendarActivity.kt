@@ -57,7 +57,10 @@ class CalendarActivity : BaseActivity() {
     private val searchInputer by lazy { MutableLiveData<String>() }
     private var searchPopup: PopupWindow? = null
 
-    private val searchAdapter by lazy { CalendarRecycleAdapter(this, viewModel, MutableLiveData()) }
+    private val searchAdapter by lazy { CalendarRecycleAdapter(this, viewModel, MutableLiveData()){
+        startActivity(Intent(this@CalendarActivity,EditActivity::class.java)
+                .putExtra("id",it))
+    } }
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +98,11 @@ class CalendarActivity : BaseActivity() {
 
         rv_calendar.apply {
             layoutManager = LinearLayoutManager(this@CalendarActivity)
-            adapter = CalendarRecycleAdapter(this@CalendarActivity, viewModel, viewModel.getEntrysByDate(nowDate))
+            adapter = CalendarRecycleAdapter(this@CalendarActivity, viewModel,
+                    viewModel.getEntrysByDate(nowDate)){
+                startActivity(Intent(this@CalendarActivity,EditActivity::class.java)
+                        .putExtra("id",it))
+            }
             addItemDecoration(CalendarEntryDecoration())
         }
 

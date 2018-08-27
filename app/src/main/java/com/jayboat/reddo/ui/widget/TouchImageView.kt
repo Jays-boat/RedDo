@@ -25,18 +25,17 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
     private val moveMode = 1
     private val scaleMode = 2
     private var currentMode = -1
-    private var isScale = false
     private val tag = "TouchImageView"
     private var mRunnable: LongPressRunnable? = null
 
     var xLocation = 0f
     var yLocation = 0f
-    var scalePro = 0f
+    var scalePro = 1f
     var picturePro = 0f
     var cWidth = 0
     var cHeight = 0
     var isDelete = false
-    var mUri: Uri? = null
+    var mUri:String = ""
 
     init {
         scaleType = ScaleType.FIT_XY
@@ -49,7 +48,7 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
         val mHeight: Int
         val widthMeasure: Int
         val heightMeasure: Int
-        if (cWidth == 0 || cHeight == 0 || scalePro == 0f) {
+        if (cWidth == 0 || cHeight == 0) {
             mWidth = screenWidth / 3
             mHeight = (mWidth / picturePro).toInt()
             widthMeasure = MeasureSpec.makeMeasureSpec(mWidth, MeasureSpec.EXACTLY)
@@ -105,7 +104,7 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
                             Log.i("scale", "$scalePro")
                             xLocation = x
                             yLocation = y
-                            originDistance = 0f
+                            originDistance = currentDistance
                             requestLayout()
                         }
                     }
@@ -127,7 +126,7 @@ class TouchImageView(context: Context?, attrs: AttributeSet?) : ImageView(contex
                     scaleMode -> {
                         Log.i(tag, "scaling...")
                         currentMode = defaultMode
-                        isScale = false
+                        originDistance = 0f
                         return true
                     }
                     else -> {

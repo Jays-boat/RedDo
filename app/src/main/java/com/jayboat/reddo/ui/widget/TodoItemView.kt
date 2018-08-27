@@ -92,7 +92,7 @@ class TodoItemView constructor(
         return super.onTouchEvent(e)
     }
 
-    fun refreshView(t: Todo, m: EntryViewModel) {
+    fun refreshView(t: Todo, m: EntryViewModel = vm) {
         this.todo = t
         this.vm = m
         this.apply {

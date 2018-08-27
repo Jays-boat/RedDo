@@ -156,30 +156,29 @@ class EntryViewModel : ViewModel() {
 
     fun insertSimpleEntry(vararg e: SimpleEntry) = Schedulers.io().scheduleDirect { entryDao.insertEntry(*e) }
 
-    fun insertEntry(e: Entry) = Schedulers.io().scheduleDirect {
-        Observable.create<Int> {
-            entryDao.insertEntry(e.simpleEntry)
-            it.onNext(entryDao.getLastID())
-        }.subscribe { id ->
-            e.apply {
-                when (simpleEntry.type) {
-                    ESSAY, AGENDA -> {
-                        textInfoList.forEach { it.entryId = id }
-                        imgList.forEach { it.entryId = id }
-                        textInfoDao.insertTextInfoList(textInfoList)
-                        imageDao.insertImages(imgList)
-                    }
-                    TODO -> {
-                        todoList.forEach { it.entryId = id }
-                        todoDao.insertTodoList(todoList)
-                    }
-                    DAILY -> {
-                    }
+    fun insertEntry(e: Entry) = Observable.create<Int>{
+        entryDao.insertEntry(e.simpleEntry)
+        it.onNext(entryDao.getLastID())
+    }.subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe { id ->
+        e.apply {
+            when (simpleEntry.type) {
+                ESSAY, AGENDA -> {
+                    textInfoList.forEach { it.entryId = id }
+                    imgList.forEach { it.entryId = id }
+                    textInfoDao.insertTextInfoList(textInfoList)
+                    imageDao.insertImages(imgList)
+                }
+                TODO -> {
+                    todoList.forEach { it.entryId = id }
+                    todoDao.insertTodoList(todoList)
+                }
+                DAILY -> {
                 }
             }
         }
-
     }
+
+
 
     fun insertEntrys(vararg e: Entry) {
         Observable.create<Int> { ob ->
@@ -192,33 +191,33 @@ class EntryViewModel : ViewModel() {
             entryDao.insertEntry(*e.map { it.simpleEntry }.toTypedArray())
             ob.onNext(entryDao.getLastID())
         }.subscribeOn(Schedulers.io())
-                .subscribe { id ->
-                    var entryId = id - e.size
-                    val textInfoList = mutableListOf<TextInfo>()
-                    val imageList = mutableListOf<Image>()
-                    val todoList = mutableListOf<Todo>()
-                    e.forEach { entry ->
-                        entryId++
-                        when (entry.simpleEntry.type) {
-                            ESSAY, AGENDA -> {
-                                entry.textInfoList.forEach { it.entryId = entryId }
-                                entry.imgList.forEach { it.entryId = entryId }
-                                textInfoList.addAll(entry.textInfoList)
-                                imageList.addAll(entry.imgList)
-                            }
-                            TODO -> {
-                                entry.todoList.forEach { it.entryId = entryId }
-                                todoList.addAll(entry.todoList)
-                            }
-                            DAILY -> {
-                            }
-                        }
+        .subscribe { id ->
+            var entryId = id - e.size
+            val textInfoList = mutableListOf<TextInfo>()
+            val imageList = mutableListOf<Image>()
+            val todoList = mutableListOf<Todo>()
+            e.forEach { entry ->
+                entryId++
+                when (entry.simpleEntry.type) {
+                    ESSAY, AGENDA -> {
+                        entry.textInfoList.forEach { it.entryId = entryId }
+                        entry.imgList.forEach { it.entryId = entryId }
+                        textInfoList.addAll(entry.textInfoList)
+                        imageList.addAll(entry.imgList)
                     }
-
-                    textInfoDao.insertTextInfoList(textInfoList)
-                    imageDao.insertImages(imageList)
-                    todoDao.insertTodoList(todoList)
+                    TODO -> {
+                        entry.todoList.forEach { it.entryId = entryId }
+                        todoList.addAll(entry.todoList)
+                    }
+                    DAILY -> {
+                    }
                 }
+            }
+
+            textInfoDao.insertTextInfoList(textInfoList)
+            imageDao.insertImages(imageList)
+            todoDao.insertTodoList(todoList)
+        }
     }
 
     fun updateSimpleEntrys(e: SimpleEntry) = Schedulers.io().scheduleDirect { entryDao.updateEntry(e) }
@@ -230,6 +229,8 @@ class EntryViewModel : ViewModel() {
                 ESSAY, AGENDA -> {
                     imageDao.delImgs(simpleEntry.id)
                     textInfoDao.delTextInfoList(simpleEntry.id)
+                    imgList.forEach { it.entryId = simpleEntry.id }
+                    textInfoList.forEach { it.entryId = simpleEntry.id }
                     imageDao.insertImages(imgList)
                     textInfoDao.insertTextInfoList(textInfoList)
                 }
@@ -243,5 +244,5 @@ class EntryViewModel : ViewModel() {
         }
     }
 
-    fun updateTodo(todo: Todo) = Schedulers.io().scheduleDirect { todoDao.updateTodo(todo) }
+    fun updateTodo(todo: Todo) = Schedulers.io().scheduleDirect{ todoDao.updateTodo(todo)}
 }

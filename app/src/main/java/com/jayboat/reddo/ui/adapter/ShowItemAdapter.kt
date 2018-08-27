@@ -10,16 +10,18 @@ import com.jayboat.reddo.ui.viewholder.LeftItemViewHolder
 import com.jayboat.reddo.ui.viewholder.NoneItemViewHolder
 import com.jayboat.reddo.ui.viewholder.RightItemViewHolder
 import com.jayboat.reddo.utils.screenHeight
+import com.jayboat.reddo.viewmodel.EntryViewModel
 
 /*
  by Cynthia at 2018/8/21
  */
-class ShowItemAdapter(private var mData: List<Entry>, private var type: String, private var mListener: (id: Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+ class ShowItemAdapter(private var mData : List<Entry>, private var type : String,private val vm:EntryViewModel,private var mClickListener:(id:Int)->Unit,private var mLongClickListener:(data:Entry)->Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val leftType = 1
     private val rightType = 2
     private val noneType = 0
     private val footType = 3
+    private var isEdit = false
 
     override fun getItemViewType(position: Int): Int {
         return when {
@@ -50,22 +52,30 @@ class ShowItemAdapter(private var mData: List<Entry>, private var type: String, 
             is NoneItemViewHolder -> holder.refreshData(type)
             is LeftItemViewHolder -> {
                 holder.apply {
-                    initData(mData[position])
+                    initData(mData[position],isEdit,vm)
                     itemView.apply {
                         layoutParams.height = screenHeight / 8
                         setOnClickListener {
-                            mListener(mData[position].simpleEntry.id)
+                            mClickListener(mData[position].simpleEntry.id)
+                        }
+                        setOnLongClickListener {
+                            mLongClickListener(mData[position])
+                            true
                         }
                     }
                 }
             }
             is RightItemViewHolder -> {
                 holder.apply {
-                    initData(mData[position])
+                    initData(mData[position],isEdit,vm)
                     itemView.apply {
                         layoutParams.height = screenHeight / 8
                         setOnClickListener {
-                            mListener(mData[position].simpleEntry.id)
+                            mClickListener(mData[position].simpleEntry.id)
+                        }
+                        setOnLongClickListener {
+                            mLongClickListener(mData[position])
+                            true
                         }
                     }
                 }
@@ -86,5 +96,11 @@ class ShowItemAdapter(private var mData: List<Entry>, private var type: String, 
         this.type = type
         notifyDataSetChanged()
     }
+
+    fun changeEdit(isEdit:Boolean){
+        this.isEdit = isEdit
+        notifyDataSetChanged()
+    }
+
 }
 

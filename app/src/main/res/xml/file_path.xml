@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <files-path
-        name="reddo_images"
-        path="Pictures"/>
+    <external-path name="reddo_DCIM" path="DCIM/reddo" />
+
+    <external-path name="reddo_Pictures" path="Pictures/reddo" />
+
+    <files-path name="reddo_private_files" path="images" />
+    <cache-path name="reddo_private_cache" path="images" />
+    <external-files-path name="reddo_external_files" path="Pictures" />
+    <external-cache-path name="reddo_external_cache" path="reddo" />
+
+    <root-path name="mq_external_cache" path="." />
 </paths>

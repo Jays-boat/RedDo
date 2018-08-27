@@ -5,12 +5,12 @@ import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import com.cjt2325.cameralibrary.JCameraView
 import com.cjt2325.cameralibrary.listener.ErrorListener
 import com.cjt2325.cameralibrary.listener.JCameraListener
 import com.cjt2325.cameralibrary.util.FileUtil
 import com.jayboat.reddo.R
+import com.jayboat.reddo.base.BaseActivity
 import com.jayboat.reddo.room.bean.SimpleEntry
 import com.jayboat.reddo.utils.dp
 import com.jayboat.reddo.utils.show
@@ -19,7 +19,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_daily_camera.*
 import org.jetbrains.anko.*
 
-class DailyCameraActivity : AppCompatActivity() {
+class DailyCameraActivity : BaseActivity() {
     var isPermissionGranted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class DailyCameraActivity : AppCompatActivity() {
         setContentView(R.layout.activity_daily_camera)
 
         jcamera.apply {
-            setFeatures(JCameraView.TYPE_VIDEO)
+            setFeatures(JCameraView.BUTTON_STATE_ONLY_RECORDER)
             setSaveVideoPath(getExternalFilesDir("video")?.path)
             setMediaQuality(JCameraView.MEDIA_QUALITY_MIDDLE)
             setErrorLisenter(object : ErrorListener {

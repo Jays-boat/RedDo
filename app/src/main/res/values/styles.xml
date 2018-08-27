@@ -11,8 +11,13 @@
     </style>
 
     <style name="anim_popup">
-        <item name="android:windowEnterAnimation">@anim/popup_in</item>
-        <item name="android:windowExitAnimation">@anim/popup_out</item>
+        <item name="android:windowEnterAnimation">@anim/popup_top_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_top_out</item>
+    </style>
+
+    <style name="anim_bottom">
+        <item name="android:windowEnterAnimation">@anim/popup_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_bottom_out</item>
     </style>
 
 </resources>

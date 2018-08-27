@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:background="#FAFAFA">
+
+    <TextView
+        android:id="@+id/tv_choose_essay"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="@string/type_name_essay"
+        android:gravity="center"
+        android:drawablePadding="5dp"
+        android:drawableTop="@drawable/ic_item_essay"/>
+
+    <TextView
+        android:id="@+id/tv_choose_todo"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="@string/type_name_todo"
+        android:gravity="center"
+        android:drawablePadding="5dp"
+        android:drawableTop="@drawable/ic_item_todo"/>
+
+    <TextView
+        android:id="@+id/tv_choose_agenda"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="@string/type_name_schedule"
+        android:gravity="center"
+        android:drawablePadding="5dp"
+        android:drawableTop="@drawable/ic_item_agenda"/>
+
+    <TextView
+        android:id="@+id/tv_choose_daily"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="@string/type_name_daily"
+        android:gravity="center"
+        android:drawablePadding="5dp"
+        android:drawableTop="@drawable/ic_item_daily"/>
+
+</LinearLayout>

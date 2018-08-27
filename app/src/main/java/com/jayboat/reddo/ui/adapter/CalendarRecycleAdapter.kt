@@ -25,7 +25,8 @@ import org.jetbrains.anko.*
 class CalendarRecycleAdapter(
         private val context: AppCompatActivity,
         private val vm: EntryViewModel,
-        entryList: LiveData<List<Entry>>
+        entryList: LiveData<List<Entry>>,
+        private val mListener:(id:Int)->Unit
 ) : RecyclerView.Adapter<CalendarEntryHolder>() {
     var entryList: LiveData<List<Entry>> = entryList
         set(value) {
@@ -114,6 +115,9 @@ class CalendarRecycleAdapter(
                         , null, null, null)
             }
             findViewById<TextView>(R.id.tv_item_todo_title).text = simpleEntry.title
+            setOnClickListener {
+                mListener(simpleEntry.id)
+            }
         }
 
         if (simpleEntry.type == EntryType.TODO) {

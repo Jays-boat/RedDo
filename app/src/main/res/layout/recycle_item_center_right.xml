@@ -48,6 +48,14 @@
         android:textColor="@color/calendar_rv_text"
         tools:text="冥想"/>
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_left_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="5dp"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/iv_center_image"
@@ -57,13 +65,25 @@
         tools:src="@drawable/shape_circle"
         tools:ignore="ContentDescription" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_left_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
+    <LinearLayout
+        android:id="@+id/ll_todo_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_centerVertical="true"
-        android:layout_marginStart="5dp"
+        android:layout_toStartOf="@id/view_line_horizontal"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="5dp"
+        >
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_item_delete"
+        android:layout_centerInParent="true"
         tools:ignore="ContentDescription" />
 
 </RelativeLayout>

@@ -18,7 +18,7 @@ class ImageEngine : ImageEngine {
     override fun loadThumbnail(context: Context, resize: Int, placeholder: Drawable, imageView: ImageView, uri: Uri) {
         val option = RequestOptions.overrideOf(resize, resize).centerCrop()
         Glide.with(context)
-                .asBitmap()  // some .jpeg files are actually gif
+                .asBitmap()
                 .load(uri)
                 .apply(option)
                 .into(imageView)
@@ -53,5 +53,4 @@ class ImageEngine : ImageEngine {
     override fun supportAnimatedGif(): Boolean {
         return true
     }
-
 }

@@ -1,24 +1,35 @@
 package com.jayboat.reddo.ui.activity
 
-import android.Manifest
+import android.Manifest.permission.*
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupWindow
+import com.bigkoo.pickerview.builder.TimePickerBuilder
+import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.jayboat.reddo.R
 import com.jayboat.reddo.base.BaseActivity
-import com.jayboat.reddo.utils.ImageEngine
+import com.jayboat.reddo.room.bean.Entry
+import com.jayboat.reddo.room.bean.SimpleEntry
+import com.jayboat.reddo.utils.*
 import com.jayboat.reddo.viewmodel.EntryViewModel
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.internal.entity.CaptureStrategy
 import kotlinx.android.synthetic.main.activity_edit.*
+import kotlinx.android.synthetic.main.popup_more.view.*
 
 class EditActivity : BaseActivity() {
 
@@ -30,17 +41,35 @@ class EditActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
+        el_edit.type = when (intent.getStringExtra("type")) {
+            TYPE_ESSAY -> SimpleEntry.EntryType.ESSAY
+            TYPE_DAILY -> SimpleEntry.EntryType.DAILY
+            TYPE_AGENDA -> SimpleEntry.EntryType.AGENDA
+            else -> SimpleEntry.EntryType.TODO
+        }
+
         val id = intent.getIntExtra("id", -1)
         if (id != -1) {
             entryViewModel.getEntryById(id).observe(this, Observer {
                 if (it == null) {
                     return@Observer
                 }
-                el_edit.getListener().loadData(it)
+                el_edit.loadData(it)
+                el_edit.type = it.simpleEntry.type
+                if (it.simpleEntry.type == SimpleEntry.EntryType.TODO) {
+                    iv_edit_album.visibility = View.GONE
+                }
+
             })
         }
-
-        iv_edit_back.setOnClickListener { finish() }
+        el_edit.addViewModel(entryViewModel)
+        iv_edit_back.setOnClickListener {
+            if (el_edit.type == SimpleEntry.EntryType.AGENDA) {
+                editTime(el_edit.data)
+            } else {
+                finish()
+            }
+        }
         iv_edit_down.setOnClickListener {
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
             val v: View? = currentFocus
@@ -49,19 +78,28 @@ class EditActivity : BaseActivity() {
             }
         }
         iv_edit_album.setOnClickListener {
-            if (requestPermission()) {
-                Matisse.from(this@EditActivity)
-                        .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
-                        .countable(true)
-                        .maxSelectable(9)
-                        .thumbnailScale(0.80f)
-                        .theme(R.style.Matisse_Zhihu)
-                        .imageEngine(ImageEngine())
-                        .capture(true)
-                        .captureStrategy(CaptureStrategy(true, "com.jayboat.reddo.fileprovider"))
-                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                        .forResult(REQUEST_CHOOSE)
-            }
+            RxPermissions(this@EditActivity)
+                    .request(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, CAMERA)
+                    .subscribe {
+                        if (it) {
+                            Matisse.from(this@EditActivity)
+                                    .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
+                                    .countable(true)
+                                    .maxSelectable(9)
+                                    .thumbnailScale(0.80f)
+                                    .theme(R.style.Matisse_Zhihu)
+                                    .imageEngine(ImageEngine())
+                                    .capture(true)
+                                    .captureStrategy(CaptureStrategy(true, "com.jayboat.reddo.fileprovider"))
+                                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                                    .forResult(REQUEST_CHOOSE)
+                        } else {
+                            show("sorry不能使用相册的图片哦_(:з」∠)_")
+                        }
+                    }
+        }
+        iv_edit_more.setOnClickListener {
+            getPopupWindow()
         }
     }
 
@@ -69,33 +107,68 @@ class EditActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CHOOSE && resultCode == RESULT_OK) {
             urls = Matisse.obtainResult(data)
-            el_edit.getListener().addPicture(urls)
+            el_edit.addPicture(urls)
         }
-    }
-
-    private fun requestPermission(): Boolean {
-        var isPermission = false
-        RxPermissions(this@EditActivity)
-                .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.CAMERA)
-                .subscribe {
-                    isPermission = when {
-                        it.granted -> true
-                        it.shouldShowRequestPermissionRationale -> false
-                        else -> false
-                    }
-                }
-        return isPermission
     }
 
 
     override fun onDestroy() {
-        if (intent.getIntExtra("id", -1) == -1) {
-            entryViewModel.insertEntry(el_edit.getListener().saveData())
+        if (intent.getIntExtra("id", -1) == -1 && el_edit.saveData().simpleEntry.detail != "") {
+            entryViewModel.insertEntry(el_edit.saveData())
         } else {
-            entryViewModel.updateEntry(el_edit.getListener().saveData())
+            entryViewModel.updateEntry(el_edit.saveData())
         }
         super.onDestroy()
     }
+
+    private fun getPopupWindow() {
+        val view = LayoutInflater.from(applicationContext).inflate(R.layout.popup_more, null)
+        PopupWindow(view, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
+                .apply {
+                    isOutsideTouchable = true
+                    isFocusable = true
+                    setBackgroundDrawable(ColorDrawable())
+                    animationStyle = R.style.anim_bottom
+                    showAtLocation(iv_edit_more, Gravity.BOTTOM, 0, 0)
+                    view.apply {
+                        tv_choose_todo.setOnClickListener {
+                            iv_edit_album.visibility = View.GONE
+                            el_edit.changeType(SimpleEntry.EntryType.TODO)
+                            dismiss()
+                        }
+                        tv_choose_agenda.setOnClickListener {
+                            iv_edit_album.visibility = View.VISIBLE
+                            el_edit.changeType(SimpleEntry.EntryType.AGENDA)
+                            dismiss()
+                        }
+                        tv_choose_essay.setOnClickListener {
+                            iv_edit_album.visibility = View.VISIBLE
+                            el_edit.changeType(SimpleEntry.EntryType.ESSAY)
+                            dismiss()
+                        }
+                        tv_choose_daily.setOnClickListener {
+                            dismiss()
+                            startActivity(Intent(this@EditActivity, DailyCameraActivity::class.java))
+                            finish()
+                        }
+                    }
+                }
+    }
+
+    private fun editTime(data: Entry) {
+        TimePickerBuilder(this@EditActivity, OnTimeSelectListener { date, _ ->
+            data.simpleEntry.time = dateToRedDate(date)
+            entryViewModel.insertEntry(data)
+            finish()
+        })
+                .setType(booleanArrayOf(true, true, true, true, true, false))
+                .setDate(redDateToDate(data.simpleEntry.time))
+                .setTitleText("选择日程开始时间哦 :>")
+                .setTitleColor(ContextCompat.getColor(this,R.color.calendar_weekend))
+                .setCancelColor(ContextCompat.getColor(this,R.color.weak_word_gray))
+                .setSubmitColor(ContextCompat.getColor(this,R.color.calendar_rv_text))
+                .build()
+                .show()
+    }
+
 }

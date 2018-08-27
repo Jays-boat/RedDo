@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="10dp"
@@ -48,6 +49,28 @@
         android:textColor="@color/calendar_rv_text"
         tools:text="冥想"/>
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_right_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="5dp"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:id="@+id/ll_todo_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/view_line_horizontal"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        >
+
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/iv_center_image"
         android:layout_width="wrap_content"
@@ -56,13 +79,12 @@
         tools:src="@drawable/shape_circle"
         tools:ignore="ContentDescription" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_right_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="5dp"
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_item_delete"
+        android:layout_centerInParent="true"
         tools:ignore="ContentDescription" />
 
 </RelativeLayout>
