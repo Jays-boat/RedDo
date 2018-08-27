@@ -4,7 +4,11 @@
 
 创作者
 
-传送门
+[Hosigus][1] / [Cynthia][2]
+
+
+[传送门][3]
+
 
 ### 简介
 
@@ -16,7 +20,7 @@
 
 ### 功能说明
 
-你可存放的内容总共有4种不同的类型
+你可存放的记忆总共有4种不同的类型
 - 随笔 
 — 用文字和图片记录你的过去、现在、未来
 - 待办 
@@ -31,7 +35,7 @@
 - 搜索
 — 进行时间/标题/内容的关键字匹配
 - 日历
-— 将同一天写下的内容以日历时间选择的形式进行展现
+— 将同一天存入的记忆以日历时间选择的形式进行展现
 - 类型
 — 通过每个内容不同的类型进行展现
 
@@ -42,3 +46,35 @@
 随意排版，可以任意添加图片并缩放
 
 在主页可以根据事件实际发生的时间来更替创建对应内容的时间(在主页长按对应条目即可触发)
+
+**还有更多功能，等待你的探索**
+
+### 部分功能展示
+
+
+![主页/夜间模式][4]
+
+---
+
+![日历页/搜索][5]
+
+---
+
+![编辑][6]
+
+---
+
+![记录][7]
+
+---
+
+![待办标记][8]
+
+[1]:https://github.com/Hosigus
+[2]:https://github.com/Cchanges
+[3]:https://github.com/Jays-boat/RedDo/raw/master/app/release/app-release.apk
+[4]:https://github.com/Jays-boat/RedDo/blob/master/img/Main_Night.gif
+[5]:https://github.com/Jays-boat/RedDo/blob/master/img/calendar.gif
+[6]:https://github.com/Jays-boat/RedDo/blob/master/img/edit.gif
+[7]:https://github.com/Jays-boat/RedDo/blob/master/img/record.gif
+[8]:https://github.com/Jays-boat/RedDo/blob/master/img/tags.gif
