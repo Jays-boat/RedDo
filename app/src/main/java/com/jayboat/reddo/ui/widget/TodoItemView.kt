@@ -92,7 +92,7 @@ class TodoItemView constructor(
         return super.onTouchEvent(e)
     }
 
-    fun refreshView(t: Todo, m: EntryViewModel = vm) {
+    fun refreshView(t: Todo, m: EntryViewModel = vm, editable: Boolean = false) {
         this.todo = t
         this.vm = m
         this.apply {
@@ -101,16 +101,35 @@ class TodoItemView constructor(
                 checkbox_todo.setBackgroundResource(R.drawable.ic_checkbox_cancel)
                 line.visibility = View.VISIBLE
                 line.backgroundColor = Color.parseColor("#E10000")
+                tv_todo.isEnabled = false
             } else if (todo.isDone) {
                 checkbox_todo.setBackgroundResource(R.drawable.ic_checkbox_checked)
                 line.visibility = View.VISIBLE
                 line.backgroundColor = Color.parseColor("#3FA55C")
+                tv_todo.isEnabled = false
             } else {
                 checkbox_todo.setBackgroundResource(R.drawable.ic_checkbox_normal)
                 line.visibility = View.GONE
+                tv_todo.isEnabled = editable
             }
 
-            tv_todo.text = todo.describe
+            tv_todo.setText(todo.describe)
+            if (editable) {
+                tv_todo.setOnEditorActionListener { v, actionId, event ->
+                    val r = tv_todo.text.toString()
+                    val str = r.replace(Regex("\n"), "")
+                    if (r.length != str.length) {
+                        tv_todo.setText(str)
+                    } else
+                        if (todo.describe != str) {
+                            todo.describe = str
+                            vm.updateTodo(todo)
+                        }
+                    false
+                }
+            } else {
+                tv_todo.background = null
+            }
 
             checkbox_todo.setOnClickListener {
                 if (!todo.isActivate) {

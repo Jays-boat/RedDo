@@ -1,5 +1,6 @@
 package com.jayboat.reddo.viewmodel
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
@@ -154,7 +155,20 @@ class EntryViewModel : ViewModel() {
 
     fun delEntry(vararg e: SimpleEntry) = Schedulers.io().scheduleDirect { entryDao.delEntry(*e) }
 
+    fun delTodoList(todoList: List<Todo>) = Schedulers.io().scheduleDirect { todoDao.delTodoList(todoList) }
+
     fun insertSimpleEntry(vararg e: SimpleEntry) = Schedulers.io().scheduleDirect { entryDao.insertEntry(*e) }
+
+    fun createEntry(useEntry: LiveData<Entry>.() -> Unit) {
+        Schedulers.io().scheduleDirect {
+            entryDao.insertEntry(SimpleEntry())
+            val id = entryDao.getLastID()
+            AndroidSchedulers.mainThread().scheduleDirect {
+                entryDao.selectEntryWithId(id).useEntry()
+            }
+        }
+    }
+
 
     fun insertEntry(e: Entry) = Observable.create<Int>{
         entryDao.insertEntry(e.simpleEntry)
@@ -177,8 +191,6 @@ class EntryViewModel : ViewModel() {
             }
         }
     }
-
-
 
     fun insertEntrys(vararg e: Entry) {
         Observable.create<Int> { ob ->
@@ -244,5 +256,11 @@ class EntryViewModel : ViewModel() {
         }
     }
 
-    fun updateTodo(todo: Todo) = Schedulers.io().scheduleDirect{ todoDao.updateTodo(todo)}
+    fun updateTodo(todo: Todo) = Schedulers.io().scheduleDirect {
+        if (todo.id == 0) {
+            todoDao.insertTodo(todo)
+        } else {
+            todoDao.updateTodo(todo)
+        }
+    }
 }

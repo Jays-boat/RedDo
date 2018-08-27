@@ -26,6 +26,7 @@ import com.jayboat.reddo.viewmodel.EntryViewModel
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.popup_search.view.*
+import org.jetbrains.anko.startActivity
 
 
 class MainActivity : BaseActivity() {
@@ -47,8 +48,13 @@ class MainActivity : BaseActivity() {
 
         mAdapter = ShowItemAdapter(ArrayList(), type, entryModel, {
             if (!isEdit) {
-                startActivity(Intent(this@MainActivity, EditActivity::class.java)
-                        .putExtra("id", it))
+                if (type == TYPE_TODO) {
+                    startActivity<EditTodoActivity>("id" to it)
+                } else {
+
+                    startActivity(Intent(this@MainActivity, EditActivity::class.java)
+                            .putExtra("id", it))
+                }
             } else {
                 entryModel.getEntryById(it).observe(this, Observer {
                     if (it == null) {
@@ -95,6 +101,8 @@ class MainActivity : BaseActivity() {
         iv_main_add.setOnClickListener {
             if (type == TYPE_DAILY) {
                 startActivity(Intent(this@MainActivity, DailyCameraActivity::class.java))
+            } else if (type == TYPE_TODO) {
+                startActivity<EditTodoActivity>()
             } else {
                 startActivity(Intent(this@MainActivity, EditActivity::class.java)
                         .putExtra("type", type))

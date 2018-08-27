@@ -30,6 +30,7 @@ import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.internal.entity.CaptureStrategy
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.popup_more.view.*
+import org.jetbrains.anko.startActivity
 
 class EditActivity : BaseActivity() {
 
@@ -57,7 +58,8 @@ class EditActivity : BaseActivity() {
                 el_edit.loadData(it)
                 el_edit.type = it.simpleEntry.type
                 if (it.simpleEntry.type == SimpleEntry.EntryType.TODO) {
-                    iv_edit_album.visibility = View.GONE
+                    startActivity<EditTodoActivity>("id" to it.simpleEntry.id)
+                    finish()
                 }
 
             })
@@ -77,7 +79,7 @@ class EditActivity : BaseActivity() {
                 imm.hideSoftInputFromWindow(v.applicationWindowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             }
         }
-        iv_edit_album.setOnClickListener {
+        iv_edit_album.setOnClickListener { _ ->
             RxPermissions(this@EditActivity)
                     .request(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, CAMERA)
                     .subscribe {
@@ -113,10 +115,11 @@ class EditActivity : BaseActivity() {
 
 
     override fun onDestroy() {
-        if (intent.getIntExtra("id", -1) == -1 && el_edit.saveData().simpleEntry.detail != "") {
-            entryViewModel.insertEntry(el_edit.saveData())
+        val dataToSave = el_edit.saveData()
+        if (intent.getIntExtra("id", -1) == -1 && !dataToSave.simpleEntry.detail.isNullOrBlank()) {
+            entryViewModel.insertEntry(dataToSave)
         } else {
-            entryViewModel.updateEntry(el_edit.saveData())
+            entryViewModel.updateEntry(dataToSave)
         }
         super.onDestroy()
     }

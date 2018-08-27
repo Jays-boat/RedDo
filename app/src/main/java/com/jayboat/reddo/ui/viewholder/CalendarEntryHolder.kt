@@ -7,6 +7,7 @@ import com.jayboat.reddo.R
 import com.jayboat.reddo.room.bean.Todo
 import com.jayboat.reddo.ui.widget.TodoItemView
 import com.jayboat.reddo.viewmodel.EntryViewModel
+import org.jetbrains.anko.collections.forEachWithIndex
 
 /**
  * Author: Hosigus
@@ -14,16 +15,16 @@ import com.jayboat.reddo.viewmodel.EntryViewModel
  * Date: 2018/8/23 23:24
  * Description: 能处理Todo的ViewHolder
  */
-class CalendarEntryHolder(v: View, private val vm: EntryViewModel) : RecyclerView.ViewHolder(v) {
-    fun initTodoView(todoList: List<Todo>) {
+class CalendarEntryHolder(v: View, private val vm: EntryViewModel, private val start: Int = 2) : RecyclerView.ViewHolder(v) {
+    fun initTodoView(todoList: List<Todo>, editable: Boolean = false) {
         itemView.findViewById<LinearLayout>(R.id.ll_item_todo).apply {
-            for (i in childCount - 1..todoList.size) {
+            for (i in childCount - start until todoList.size) {
                 addView(TodoItemView(context))
             }
-            for (i in 2..todoList.size) {
-                (getChildAt(i) as TodoItemView).refreshView(todoList[i - 2], vm)
+            todoList.forEachWithIndex { i, t ->
+                (getChildAt(start + i) as? TodoItemView)?.refreshView(t, vm, editable)
             }
-            for (i in todoList.size + 1 until childCount) {
+            for (i in todoList.size + start until childCount) {
                 removeViewAt(i)
             }
         }

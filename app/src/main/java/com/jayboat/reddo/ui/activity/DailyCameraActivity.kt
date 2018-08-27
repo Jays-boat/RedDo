@@ -1,26 +1,51 @@
 package com.jayboat.reddo.ui.activity
 
 import android.Manifest.permission.*
-import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import com.cjt2325.cameralibrary.JCameraView
 import com.cjt2325.cameralibrary.listener.ErrorListener
 import com.cjt2325.cameralibrary.listener.JCameraListener
-import com.cjt2325.cameralibrary.util.FileUtil
 import com.jayboat.reddo.R
 import com.jayboat.reddo.base.BaseActivity
 import com.jayboat.reddo.room.bean.SimpleEntry
-import com.jayboat.reddo.utils.dp
 import com.jayboat.reddo.utils.show
 import com.jayboat.reddo.viewmodel.EntryViewModel
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_daily_camera.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.editText
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class DailyCameraActivity : BaseActivity() {
     var isPermissionGranted = false
+
+    fun saveBitmap(dir: String, b: Bitmap): String {
+        val dataTake = System.currentTimeMillis()
+        val jpegName = "$dir/picture_$dataTake.jpg"
+        var bos: BufferedOutputStream? = null
+        try {
+            val file = File(jpegName)
+            if (file.exists()) {
+                file.delete()
+            }
+            file.createNewFile()
+            bos = BufferedOutputStream(FileOutputStream(file))
+            b.compress(Bitmap.CompressFormat.JPEG, 100, bos)
+            bos.flush()
+            return jpegName
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return ""
+        } finally {
+            bos?.close()
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,45 +61,42 @@ class DailyCameraActivity : BaseActivity() {
                 }
 
                 override fun onError() {
-                    show("你这点权限，我很难帮你办事啊╮(╯3╰)╭")
+                    runOnUiThread {
+                        show("你这点权限，我很难帮你办事啊╮(╯3╰)╭")
+                    }
                 }
             })
             setJCameraLisenter(object : JCameraListener {
-                override fun recordSuccess(url: String?, firstFrame: Bitmap?) {
-                    val bitmapName = FileUtil.saveBitmap(
-                            getExternalFilesDir("video/preview")?.path,
+                override fun recordSuccess(url: String, firstFrame: Bitmap) {
+                    val bitmapName = saveBitmap(
+                            getExternalFilesDir("video/preview").path,
                             firstFrame
                     )
-                    Dialog(this@DailyCameraActivity).apply {
-                        setCancelable(false)
-                        setContentView(verticalLayout {
-                            lparams(matchParent, matchParent).apply {
-                                padding = dp(8f).toInt()
-                                minimumWidth = dp(150f).toInt()
-                            }
-                            val title = editText {
-                                hint = "写点什么记录一下吧"
-                            }.lparams(matchParent, wrapContent)
-                            button {
-                                background = null
-                                text = "保存"
-                                setOnClickListener { _ ->
-                                    ViewModelProviders.of(this@DailyCameraActivity)
-                                            .get(EntryViewModel::class.java)
-                                            .insertSimpleEntry(
-                                                    SimpleEntry(
-                                                            SimpleEntry.EntryType.DAILY,
-                                                            title.text.toString().takeIf { it.isNotBlank() }
-                                                                    ?: "假装有标题(⊃д⊂)",
-                                                            "$bitmapName|$url"
-                                                    )
+                    AlertDialog.Builder(this@DailyCameraActivity).apply {
+                        setTitle("成功记录下来了呢~")
+                        val et = editText {
+                            hint = "给这段回忆起个名吧~"
+                        }
+                        removeView(et)
+                        setView(et)
+                        setPositiveButton("保存进回忆") { _, _ ->
+                            ViewModelProviders.of(this@DailyCameraActivity)
+                                    .get(EntryViewModel::class.java)
+                                    .insertSimpleEntry(
+                                            SimpleEntry(
+                                                    SimpleEntry.EntryType.DAILY,
+                                                    et.text.toString().takeIf { it.isNotBlank() }
+                                                            ?: "假装有标题(⊃д⊂)",
+                                                    "$bitmapName|$url"
                                             )
-                                    finish()
-                                }
-                            }.lparams(matchParent, wrapContent)
-                        })
-                        show()
-                    }
+                                    )
+                            finish()
+                        }
+                        setNeutralButton("消失在岁月") { _, _ ->
+                            finish()
+                        }
+                        setCancelable(false)
+                    }.show()
                 }
 
                 override fun captureSuccess(bitmap: Bitmap?) {}

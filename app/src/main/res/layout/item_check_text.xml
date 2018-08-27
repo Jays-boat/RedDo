@@ -12,7 +12,7 @@
         android:layout_marginStart="4dp"
         tools:background="@drawable/ic_checkbox_normal" />
 
-    <TextView
+    <EditText
         android:id="@+id/tv_todo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,6 +22,7 @@
         android:layout_toEndOf="@id/checkbox_todo"
         android:textSize="14sp"
         android:textColor="@color/todo_item_text"
+        android:maxLines="1"
         tools:text="通过考核" />
 
     <View
