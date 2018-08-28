@@ -70,6 +70,25 @@
 
 ![待办标记][8]
 
+
+### 相关
+- kotlin / anko
+- liveData / viewModel / Room
+- Rx系列
+- 特别感谢Matisse / TimePickerView / Calendarview / Glide / ...
+- UI设计参考原型->Pendo，非常不md
+
+### 不足 / Bugs
+- 空描述，但是添加了图片的情况之下会闪退
+- 图片选择调用了拍照后有闪退
+- 某些ui设置 / 交互方面的问题
+- 滑动处理的问题
+
+### 更新日志
+> 啥时候修bug啊，我也不知道，不想修了，可能是因为我<-菜鸡本人Android开发太菜了吧
+
+修好了问题再说update
+
 [1]:https://github.com/Hosigus
 [2]:https://github.com/Cchanges
 [3]:https://github.com/Jays-boat/RedDo/raw/master/app/release/app-release.apk
